@@ -19,16 +19,17 @@ public class Tarro {
 	   private boolean herido = false;
 	   private int tiempoHeridoMax=50;
 	   private int tiempoHerido;
-	   
+       private Paraguas paraguas;
+
 	   public Tarro(Texture tex, Sound ss) {
 		   bucketImage = tex;
 		   sonidoHerido = ss;
 	   }
-	   
+
 		public int getVidas() {
 			return vidas;
 		}
-	
+
 		public int getPuntos() {
 			return puntos;
 		}
@@ -38,8 +39,8 @@ public class Tarro {
 		public void sumarPuntos(int pp) {
 			puntos+=pp;
 		}
-		
-	
+
+
 	   public void crear() {
 
 		      bucket = new Rectangle();
@@ -55,18 +56,18 @@ public class Tarro {
 		  sonidoHerido.play();
 	   }
 	   public void dibujar(SpriteBatch batch) {
-		 if (!herido)  
+		 if (!herido)
 		   batch.draw(bucketImage, bucket.x, bucket.y);
 		 else {
-		
+
 		   batch.draw(bucketImage, bucket.x, bucket.y+ MathUtils.random(-5,5));
 		   tiempoHerido--;
 		   if (tiempoHerido<=0) herido = false;
 		 }
-	   } 
-	   
-	   
-	   public void actualizarMovimiento() { 
+	   }
+
+
+	   public void actualizarMovimiento() {
 		   // movimiento desde mouse/touch
 		   /*if(Gdx.input.isTouched()) {
 			      Vector3 touchPos = new Vector3();
@@ -81,14 +82,16 @@ public class Tarro {
 		   if(bucket.x < 0) bucket.x = 0;
 		   if(bucket.x > 800 - 64) bucket.x = 800 - 64;
 	   }
-	    
+
 
 	public void destruir() {
 		    bucketImage.dispose();
 	   }
-	
+
    public boolean estaHerido() {
 	   return herido;
    }
-	   
+
+   public void setParaguas(Paraguas paraguas) {this.paraguas = paraguas;}
+
 }
