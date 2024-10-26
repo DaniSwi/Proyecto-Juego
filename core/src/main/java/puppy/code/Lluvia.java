@@ -87,9 +87,9 @@ public class Lluvia {
 	  for (int i=0; i < rainDropsPos.size; i++ ) {
 		  Rectangle raindrop = rainDropsPos.get(i);
 		  if(rainDropsType.get(i)==1) // gota dañina
-	         batch.draw(gotaMala, raindrop.x, raindrop.y);
+	         batch.draw(gotaMala.getImagenGota(), raindrop.x, raindrop.y);
 		  else
-			 batch.draw(gotaBuena, raindrop.x, raindrop.y);
+			 batch.draw(gotaBuena.getImagenGota(), raindrop.x, raindrop.y);
 	   }
    }
    public void destruir() {

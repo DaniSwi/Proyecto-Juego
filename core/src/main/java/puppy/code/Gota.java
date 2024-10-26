@@ -32,6 +32,6 @@ public abstract class Gota implements ObjetoCaible {
 
     public abstract void aplicarEfecto(Tarro tarro);
 
-
+    public Texture getImagenGota() {return imagenGota;}
 
 }
