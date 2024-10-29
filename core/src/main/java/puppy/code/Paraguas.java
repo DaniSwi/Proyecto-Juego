@@ -12,13 +12,13 @@ import com.badlogic.gdx.math.Rectangle;
 //Que lo recoja el tarro, evitando así gotas malas
 //Durabilidad de 3 gotas malas
 
-public class Paraguas {
+public class Paraguas implements ObjetoCaible {
     private Rectangle paraguas;
     private Texture imagenParaguas;
     private Sound sonidoGotaTapada;
     private int durabilidadParaguas = 3;
     private boolean capturado;
-    private float velocidadCaida = 200;
+    private float velocidadCaida = 150;
 
     public Paraguas(Texture imagenParaguas, Sound sonidoGota){
         this.imagenParaguas = imagenParaguas;
@@ -63,4 +63,14 @@ public class Paraguas {
         if(!capturado) batch.draw(imagenParaguas, paraguas.x, paraguas.y);
     }
 
+    public void actualizarPosicion(float x, float y) {
+        if(capturado) {
+            paraguas.x = x;
+            paraguas.y = y;
+        }
+    }
+
+    public Texture getImagenParaguas() {return imagenParaguas;}
+
+    public Rectangle getArea() {return paraguas;}
 }

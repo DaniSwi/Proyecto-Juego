@@ -39,6 +39,12 @@ public class Lluvia {
 	}
 
 	private void crearGotaDeLluvia() {
+        int random = MathUtils.random(1, 40);
+        if(random == 2) {
+            Sound sound = Gdx.audio.newSound(Gdx.files.internal("umbrellaSfx.mp3"));
+            Paraguas paraguas = new Paraguas(new Texture(Gdx.files.internal("paraguasSprite.png")), sound);
+            rainDropsPos.add(paraguas);
+        }
         if(MathUtils.random(1,10)<3){
             GotaMala gota = new GotaMala(gotaMala.getImagenGota(), 10);
             rainDropsPos.add(gota);
@@ -55,28 +61,37 @@ public class Lluvia {
 	   // generar gotas de lluvia
 	   if(TimeUtils.nanoTime() - lastDropTime > 100000000) crearGotaDeLluvia();
 
-
 	   // revisar si las gotas cayeron al suelo o chocaron con el tarro
 	   for (int i=0; i < rainDropsPos.size; ++i) {
-		  Gota gota = rainDropsType.get(i);
-	      gota.getArea().y -= 300 * Gdx.graphics.getDeltaTime();
-	      //cae al suelo y se elimina
-	      if(gota.getArea().y + 64 < 0) {
-	    	  rainDropsPos.removeIndex(i);
-	    	  rainDropsType.removeIndex(i);
-	      }
-	      if(gota.getArea().overlaps(tarro.getArea())) { //la gota choca con el tarro
-	    	if(rainDropsType.get(i) instanceof GotaMala) { // gota dañina
-	    	  tarro.dañar();
-	    	  rainDropsPos.removeIndex(i);
-	          rainDropsType.removeIndex(i);
-	      	} else { // gota a recolectar
-	    	  tarro.sumarPuntos(10);
-	          dropSound.play();
-	          rainDropsPos.removeIndex(i);
-	          rainDropsType.removeIndex(i);
-	      	}
-	      }
+          ObjetoCaible objeto = rainDropsPos.get(i);
+          if(objeto instanceof Gota) {
+              Gota gota = rainDropsType.get(i);
+              gota.getArea().y -= 300 * Gdx.graphics.getDeltaTime();
+              //cae al suelo y se elimina
+              if(gota.getArea().y + 64 < 0) {
+                  rainDropsPos.removeIndex(i);
+                  rainDropsType.removeIndex(i);
+              }
+              if(gota.getArea().overlaps(tarro.getArea())) { //la gota choca con el tarro
+                  if(rainDropsType.get(i) instanceof GotaMala) { // gota dañina
+                      tarro.dañar();
+                      rainDropsPos.removeIndex(i);
+                      rainDropsType.removeIndex(i);
+                  } else { // gota a recolectar
+                      tarro.sumarPuntos(10);
+                      dropSound.play();
+                      rainDropsPos.removeIndex(i);
+                      rainDropsType.removeIndex(i);
+                  }
+              }
+          } else {
+              Paraguas paraguas = (Paraguas)rainDropsPos.get(i);
+              if(paraguas.getArea().y + 64 < 0)
+                  rainDropsPos.removeIndex(i);
+              if(paraguas.getArea().overlaps(tarro.getArea())) { // El paraguas choca con el tarro
+                  tarro.setParaguas(paraguas);
+              }
+          }
 	   }
    }
 

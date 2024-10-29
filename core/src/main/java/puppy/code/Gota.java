@@ -1,5 +1,6 @@
 package puppy.code;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -20,8 +21,8 @@ public abstract class Gota implements ObjetoCaible {
         this.area.height = 64;
     }
 
-    public void caer(float deltaTime) {
-        area.y = velocidadCaida * deltaTime;
+    public void caer() {
+        area.y -= velocidadCaida * Gdx.graphics.getDeltaTime();
     }
 
     public void dibujar(SpriteBatch batch) {
