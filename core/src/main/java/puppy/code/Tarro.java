@@ -98,6 +98,7 @@ public class Tarro {
 
     public void setParaguas(Paraguas paraguas) {
         this.paraguas = paraguas;
+        this.paraguas.setCapturado();
     }
 
 }

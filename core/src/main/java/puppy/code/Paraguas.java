@@ -1,7 +1,6 @@
 package puppy.code;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,17 +12,21 @@ import com.badlogic.gdx.math.Rectangle;
 //Durabilidad de 3 gotas malas
 
 public class Paraguas implements ObjetoCaible {
-    private Rectangle paraguas;
+    private Rectangle area;
     private Texture imagenParaguas;
-    private Sound sonidoGotaTapada;
     private int durabilidadParaguas = 3;
     private boolean capturado;
-    private float velocidadCaida = 150;
+    private float velocidadCaida;
 
-    public Paraguas(Texture imagenParaguas, Sound sonidoGota){
+    public Paraguas(Texture imagenParaguas, float velocidadCaida) {
         this.imagenParaguas = imagenParaguas;
-        this.sonidoGotaTapada = sonidoGota;
+        this.velocidadCaida = velocidadCaida;
         this.capturado = false;
+        this.area = new Rectangle();
+        this.area.x = MathUtils.random(0, 69);
+        this.area.y = 480;
+        this.area.width = 69;
+        this.area.height = 64;
     }
 
     public int getDurabilidadParaguas() {return durabilidadParaguas;}
@@ -31,28 +34,21 @@ public class Paraguas implements ObjetoCaible {
     public void dañoParaguas() {
         if(capturado) {
             --durabilidadParaguas;
-            sonidoGotaTapada.play();
+            Sound s = Gdx.audio.newSound(Gdx.files.internal("umbrellaSfx.mp3"));
+            s.play();
         }
-    }
-
-    public void crear() {
-        paraguas = new Rectangle();
-        paraguas.x = MathUtils.random(0, 800-64);
-        paraguas.y = 480;
-        paraguas.width = 64;
-        paraguas.height = 64;
     }
 
     public boolean estaCapturado() {return capturado;}
 
     public void caer() {
         if(!capturado) {
-            paraguas.y -= velocidadCaida * Gdx.graphics.getDeltaTime();
+            area.y -= velocidadCaida * Gdx.graphics.getDeltaTime();
         }
     }
 
     public boolean capturar(Rectangle tarro) {
-        if(paraguas.overlaps(tarro)) {
+        if(area.overlaps(tarro)) {
             capturado = true;
             return true;
         }
@@ -60,17 +56,21 @@ public class Paraguas implements ObjetoCaible {
     }
 
     public void dibujar(SpriteBatch batch) {
-        if(!capturado) batch.draw(imagenParaguas, paraguas.x, paraguas.y);
+        if(capturado) batch.draw(imagenParaguas, area.x, area.y);
     }
 
     public void actualizarPosicion(float x, float y) {
         if(capturado) {
-            paraguas.x = x;
-            paraguas.y = y;
+            area.x = x;
+            area.y = y;
         }
     }
 
     public Texture getImagenParaguas() {return imagenParaguas;}
 
-    public Rectangle getArea() {return paraguas;}
+    public Rectangle getArea() {return area;}
+
+    public void setCapturado() {
+        this.capturado = true;
+    }
 }
