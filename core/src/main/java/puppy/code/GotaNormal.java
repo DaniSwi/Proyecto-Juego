@@ -10,7 +10,7 @@ public class GotaNormal extends Gota {
 
     @Override
     public void aplicarEfecto(Tarro tarro) {
-        //Se le suma 1 punto por agarrar la gota correctamente
+        //Se le suma 10 puntos por agarrar la gota correctamente
         tarro.sumarPuntos(10);
     }
 }

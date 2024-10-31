@@ -14,19 +14,25 @@ public class Lluvia {
 	private Array<Rectangle> rainDropsPos;
 	private Array<ObjetoCaible> rainDropsType;
     private long lastDropTime;
-    private GotaNormal gotaBuena;
+    private GotaNormal gotaNormal;
+    private GotaBuena gotaBuena;
     private GotaMala gotaMala;
     private Sound dropSound;
     private Music rainMusic;
     private Sound umbrellaCatchingSound;
+    private Texture fondo;
+    private Sound sonidoGotaBuena;
 
-    //private Array<ObjetoCaible> objetosQueCaen;
 
-	public Lluvia(GotaNormal gotaBuena, GotaMala gotaMala, Sound ss, Music mm, Sound umb) {
+	public Lluvia(GotaNormal gotaNormal, GotaBuena gotaBuena ,GotaMala gotaMala, Sound ss, Music mm, Sound umb) {
 		rainMusic = mm;
 		dropSound = ss;
+        this.gotaNormal = gotaNormal;
 		this.gotaBuena = gotaBuena;
 		this.gotaMala = gotaMala;
+        this.umbrellaCatchingSound = umb;
+        this.fondo = new Texture(Gdx.files.internal("Fondo.png"));
+        this.sonidoGotaBuena = Gdx.audio.newSound(Gdx.files.internal("sonidoVidaAumentada.mp3"));
 	}
 
 	public void crear() {
@@ -50,18 +56,21 @@ public class Lluvia {
     }
 
 	private void crearGotaDeLluvia() {
-        System.out.println("Hola!");
         Rectangle objetoLLuvia = new Rectangle();
         objetoLLuvia.x = MathUtils.random(0,800-64);
         objetoLLuvia.y = 480;
         objetoLLuvia.width = 64;
         objetoLLuvia.height = 64;
         rainDropsPos.add(objetoLLuvia);
-        if(MathUtils.random(1,10)<3){
+        int random = MathUtils.random(0,100);
+        if(random >= 0 && random <= 30){
             GotaMala gota = new GotaMala(gotaMala.getImagenGota(), 30);
             rainDropsType.add(gota);
+        } else if(random >= 31 && random <= 99){
+            GotaNormal gota = new GotaNormal(gotaNormal.getImagenGota(), 30);
+            rainDropsType.add(gota);
         } else {
-            GotaNormal gota = new GotaNormal(gotaBuena.getImagenGota(), 30);
+            GotaBuena gota = new GotaBuena(gotaBuena.getImagenGota(), 30);
             rainDropsType.add(gota);
         }
         lastDropTime = TimeUtils.nanoTime();
@@ -86,13 +95,15 @@ public class Lluvia {
            if (objetoLluvia.overlaps(tarro.getArea())) { //El objeto choca con el tarro
                if(rainDropsType.get(i) instanceof Gota) {  //El objeto es una gota
                    if (rainDropsType.get(i) instanceof GotaMala) { // gota dañina
-                       tarro.dañar();
+                       gotaMala.aplicarEfecto(tarro);
+                       rainDropsPos.removeIndex(i);
+                       rainDropsType.removeIndex(i);
+                   } else if(rainDropsType.get(i) instanceof GotaBuena) {
+                       sonidoGotaBuena.play();
+                       gotaBuena.aplicarEfecto(tarro);
                        rainDropsPos.removeIndex(i);
                        rainDropsType.removeIndex(i);
                    }
-                   /*
-                   Aca implementar la gota buena
-                   que de vida */
                    else { // gota a recolectar
                        tarro.sumarPuntos(10);
                        dropSound.play();
@@ -111,7 +122,7 @@ public class Lluvia {
    public void actualizarDibujoLluvia(SpriteBatch batch) {
 	  for (int i=0; i < rainDropsPos.size; i++ ) {
 		  Rectangle objetoLLuvia = rainDropsPos.get(i); //Puede ser, gota normal, gota mala o un paraguas! careful
-		  if(rainDropsType.get(i) instanceof Gota){ // Gota dañina y gota normal
+		  if(rainDropsType.get(i) instanceof Gota){ // Gota dañina y gota normal (y gota buena)
               Gota gota = (Gota)rainDropsType.get(i);
               batch.draw(gota.getImagenGota(), objetoLLuvia.x, objetoLLuvia.y);
           } else { //paraguas
@@ -123,6 +134,10 @@ public class Lluvia {
    public void destruir() {
 	      dropSound.dispose();
           rainMusic.dispose();
+   }
+
+   public Texture getFondo() {
+        return fondo;
    }
 
 }

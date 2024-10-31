@@ -19,9 +19,9 @@ public class GameLluvia extends ApplicationAdapter {
        private OrthographicCamera camera;
 	   private SpriteBatch batch;
 	   private BitmapFont font;
-
 	   private Tarro tarro;
 	   private Lluvia lluvia;
+
 	@Override
 	public void create () {
 		 font = new BitmapFont(); // use libGDX's default Arial font
@@ -33,10 +33,12 @@ public class GameLluvia extends ApplicationAdapter {
 	      // load the drop sound effect and the rain background "music"
           Texture gota = new Texture(Gdx.files.internal("drop.png"));
           Texture gotaMalaT = new Texture(Gdx.files.internal("dropBad.png"));
+          Texture gotaB = new Texture(Gdx.files.internal("gotaVerde.png"));
 
 
           GotaNormal gotaNormal = new GotaNormal(gota, 30);
           GotaMala gotaMala = new GotaMala(gotaMalaT, 30);
+          GotaBuena gotaBuena = new GotaBuena(gotaB, 30);
 
 
           Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
@@ -44,7 +46,7 @@ public class GameLluvia extends ApplicationAdapter {
 	      Music rainMusic = Gdx.audio.newMusic(Gdx.files.internal("doudou.mp3"));
 
           Sound u = Gdx.audio.newSound(Gdx.files.internal("umbrellaSfx.wav"));
-          lluvia = new Lluvia(gotaNormal, gotaMala, dropSound, rainMusic, u);
+          lluvia = new Lluvia(gotaNormal,gotaBuena ,gotaMala, dropSound, rainMusic, u);
 
 	      // camera
 	      camera = new OrthographicCamera();
@@ -68,6 +70,7 @@ public class GameLluvia extends ApplicationAdapter {
 		//actualizar
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+        batch.draw(lluvia.getFondo(), 0, 0, camera.viewportWidth, camera.viewportHeight);
 		//dibujar textos
 		font.draw(batch, "Gotas totales: " + tarro.getPuntos(), 5, 475);
 		font.draw(batch, "Vidas : " + tarro.getVidas(), 720, 475);
@@ -93,5 +96,6 @@ public class GameLluvia extends ApplicationAdapter {
 	      batch.dispose();
 	      font.dispose();
 	}
+
 }
 

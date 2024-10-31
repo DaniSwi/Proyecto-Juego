@@ -106,4 +106,8 @@ public class Tarro {
             this.paraguas.setCapturado();
         }
     }
+
+    public void aumentarVida(){
+        ++vidas;
+    }
 }
