@@ -52,10 +52,14 @@ public class Tarro {
     }
 
     public void dañar() {
-        vidas--;
-        herido = true;
-        tiempoHerido = tiempoHeridoMax;
-        sonidoHerido.play();
+        if(paraguas != null && paraguas.getDurabilidadParaguas() > 0 && paraguas.estaCapturado())
+            paraguas.dañoParaguas();
+        else {
+            vidas--;
+            herido = true;
+            tiempoHerido = tiempoHeridoMax;
+            sonidoHerido.play();
+        }
     }
 
     public void dibujar(SpriteBatch batch) {
@@ -97,8 +101,9 @@ public class Tarro {
     }
 
     public void setParaguas(Paraguas paraguas) {
-        this.paraguas = paraguas;
-        this.paraguas.setCapturado();
+        if(this.paraguas != null) {
+            this.paraguas = paraguas;
+            this.paraguas.setCapturado();
+        }
     }
-
 }

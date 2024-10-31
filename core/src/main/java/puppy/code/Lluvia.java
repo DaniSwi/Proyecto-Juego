@@ -11,17 +11,18 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class Lluvia {
-	private Array<ObjetoCaible> rainDropsPos;
-	private Array<Gota> rainDropsType;
+	private Array<Rectangle> rainDropsPos;
+	private Array<ObjetoCaible> rainDropsType;
     private long lastDropTime;
     private GotaNormal gotaBuena;
     private GotaMala gotaMala;
     private Sound dropSound;
     private Music rainMusic;
+    private Sound umbrellaCatchingSound;
 
     //private Array<ObjetoCaible> objetosQueCaen;
 
-	public Lluvia(GotaNormal gotaBuena, GotaMala gotaMala, Sound ss, Music mm) {
+	public Lluvia(GotaNormal gotaBuena, GotaMala gotaMala, Sound ss, Music mm, Sound umb) {
 		rainMusic = mm;
 		dropSound = ss;
 		this.gotaBuena = gotaBuena;
@@ -29,9 +30,9 @@ public class Lluvia {
 	}
 
 	public void crear() {
-		rainDropsType = new Array<Gota>();
+		rainDropsType = new Array<ObjetoCaible>();
 		//rainDropsType = new Array<Integer>();
-        rainDropsPos = new Array<ObjetoCaible>();
+        rainDropsPos = new Array<Rectangle>();
 		crearGotaDeLluvia();
         crearParaguas();
 	      // start the playback of the background music immediately
@@ -42,25 +43,25 @@ public class Lluvia {
     private void crearParaguas() {
         if(MathUtils.random(0,200) < 1) {
             Texture paraguasT = new Texture(Gdx.files.internal("paraguasSprite.png"));
-            Sound umbrellaSfx = Gdx.audio.newSound(Gdx.files.internal("umbrellaSfx.mp3"));
             Paraguas paraguas = new Paraguas(paraguasT, 20);
-            rainDropsPos.add(paraguas);
+            rainDropsPos.add(paraguas.getArea());
+            rainDropsType.add(paraguas);
         }
     }
 
 	private void crearGotaDeLluvia() {
-       /* if(random == 2) {
-            Sound sound = Gdx.audio.newSound(Gdx.files.internal("umbrellaSfx.mp3"));
-            Paraguas paraguas = new Paraguas(new Texture(Gdx.files.internal("paraguasSprite.png")), sound);
-            rainDropsPos.add(paraguas);
-        }*/
+        System.out.println("Hola!");
+        Rectangle objetoLLuvia = new Rectangle();
+        objetoLLuvia.x = MathUtils.random(0,800-64);
+        objetoLLuvia.y = 480;
+        objetoLLuvia.width = 64;
+        objetoLLuvia.height = 64;
+        rainDropsPos.add(objetoLLuvia);
         if(MathUtils.random(1,10)<3){
             GotaMala gota = new GotaMala(gotaMala.getImagenGota(), 30);
-            rainDropsPos.add(gota);
             rainDropsType.add(gota);
         } else {
             GotaNormal gota = new GotaNormal(gotaBuena.getImagenGota(), 30);
-            rainDropsPos.add(gota);
             rainDropsType.add(gota);
         }
         lastDropTime = TimeUtils.nanoTime();
@@ -73,52 +74,49 @@ public class Lluvia {
            crearParaguas();
        }
 
-	   // revisar si las gotas cayeron al suelo o chocaron con el tarro
-	   for (int i=0; i < rainDropsPos.size; ++i) {
-          ObjetoCaible objeto = rainDropsPos.get(i);
-          if(objeto instanceof Gota) {
-              Gota gota = rainDropsType.get(i);
-              gota.getArea().y -= 300 * Gdx.graphics.getDeltaTime();
-              //cae al suelo y se elimina
-              if(gota.getArea().y + 64 < 0) {
-                  rainDropsPos.removeIndex(i);
-                  rainDropsType.removeIndex(i);
-              }
-              if(gota.getArea().overlaps(tarro.getArea())) { //la gota choca con el tarro
-                  if(rainDropsType.get(i) instanceof GotaMala) { // gota dañina
-                      tarro.dañar();
-                      rainDropsPos.removeIndex(i);
-                      rainDropsType.removeIndex(i);
-                  } else { // gota a recolectar
-                      tarro.sumarPuntos(10);
-                      dropSound.play();
-                      rainDropsPos.removeIndex(i);
-                      rainDropsType.removeIndex(i);
-                  }
-              }
-          } else {
-              Paraguas paraguas = (Paraguas)rainDropsPos.get(i);
-              paraguas.getArea().y -= 300 * Gdx.graphics.getDeltaTime();
-              //cae al suelo y se elimina!!!
-              if(paraguas.getArea().y + 64 < 0)
-                  rainDropsPos.removeIndex(i);
-              if(paraguas.capturar(tarro.getArea())) { // El paraguas choca con el tarro
-                  tarro.setParaguas(paraguas);
-                  rainDropsPos.removeIndex(i);
-              }
-          }
-	   }
+       // revisar si las gotas cayeron al suelo o chocaron con el tarro
+       for (int i = 0; i < rainDropsPos.size; ++i) {
+           Rectangle objetoLluvia = rainDropsPos.get(i);
+           objetoLluvia.y -= 300 * Gdx.graphics.getDeltaTime();
+           //cae al suelo y se elimina
+           if (objetoLluvia.y + 64 < 0) {
+               rainDropsPos.removeIndex(i);
+               rainDropsType.removeIndex(i);
+           }
+           if (objetoLluvia.overlaps(tarro.getArea())) { //El objeto choca con el tarro
+               if(rainDropsType.get(i) instanceof Gota) {  //El objeto es una gota
+                   if (rainDropsType.get(i) instanceof GotaMala) { // gota dañina
+                       tarro.dañar();
+                       rainDropsPos.removeIndex(i);
+                       rainDropsType.removeIndex(i);
+                   }
+                   /*
+                   Aca implementar la gota buena
+                   que de vida */
+                   else { // gota a recolectar
+                       tarro.sumarPuntos(10);
+                       dropSound.play();
+                       rainDropsPos.removeIndex(i);
+                       rainDropsType.removeIndex(i);
+                   }
+               } else { //El objeto es un paraguas
+                   tarro.setParaguas((Paraguas)rainDropsType.get(i));
+                   rainDropsPos.removeIndex(i);
+                   rainDropsType.removeIndex(i);
+               }
+           }
+       }
    }
 
    public void actualizarDibujoLluvia(SpriteBatch batch) {
 	  for (int i=0; i < rainDropsPos.size; i++ ) {
-		  ObjetoCaible objeto = rainDropsPos.get(i); //Puede ser, gota buena, gota mala o un paraguas! careful
-		  if(rainDropsType.get(i) instanceof Gota){ // Gota dañina y gota buena
+		  Rectangle objetoLLuvia = rainDropsPos.get(i); //Puede ser, gota normal, gota mala o un paraguas! careful
+		  if(rainDropsType.get(i) instanceof Gota){ // Gota dañina y gota normal
               Gota gota = (Gota)rainDropsType.get(i);
-              batch.draw(gota.getImagenGota(), gota.getArea().x, gota.getArea().y);
-          } else {
-              Paraguas paraguas1 = (Paraguas)rainDropsPos.get(i);
-              batch.draw(paraguas1.getImagenParaguas(), paraguas1.getArea().x, paraguas1.getArea().y);
+              batch.draw(gota.getImagenGota(), objetoLLuvia.x, objetoLLuvia.y);
+          } else { //paraguas
+              Paraguas paraguas1 = (Paraguas)rainDropsType.get(i);
+              batch.draw(paraguas1.getImagenParaguas(), objetoLLuvia.x, objetoLLuvia.y);
           }
 	   }
    }

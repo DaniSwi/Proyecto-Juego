@@ -23,7 +23,7 @@ public class Paraguas implements ObjetoCaible {
         this.velocidadCaida = velocidadCaida;
         this.capturado = false;
         this.area = new Rectangle();
-        this.area.x = MathUtils.random(0, 69);
+        this.area.x = MathUtils.random(0, 800-69);
         this.area.y = 480;
         this.area.width = 69;
         this.area.height = 64;
@@ -32,11 +32,8 @@ public class Paraguas implements ObjetoCaible {
     public int getDurabilidadParaguas() {return durabilidadParaguas;}
 
     public void dañoParaguas() {
-        if(capturado) {
+        if(capturado)
             --durabilidadParaguas;
-            Sound s = Gdx.audio.newSound(Gdx.files.internal("umbrellaSfx.mp3"));
-            s.play();
-        }
     }
 
     public boolean estaCapturado() {return capturado;}

@@ -42,7 +42,9 @@ public class GameLluvia extends ApplicationAdapter {
           Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
 
 	      Music rainMusic = Gdx.audio.newMusic(Gdx.files.internal("doudou.mp3"));
-          lluvia = new Lluvia(gotaNormal, gotaMala, dropSound, rainMusic);
+
+          Sound u = Gdx.audio.newSound(Gdx.files.internal("umbrellaSfx.wav"));
+          lluvia = new Lluvia(gotaNormal, gotaMala, dropSound, rainMusic, u);
 
 	      // camera
 	      camera = new OrthographicCamera();
