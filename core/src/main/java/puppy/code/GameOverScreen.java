@@ -38,8 +38,10 @@ public class GameOverScreen implements Screen {
         sonido.play();
         batch.draw(fondo, 250, 100);
 
-        font.draw(batch, "GAME OVER ", 100, 200);
+        int intentos = PlayerStats.getInstance().getIntentos();
+        font.draw(batch, "GAME                                                              OVER ", 100, 200);
         font.draw(batch, "Toca en cualquier lado para reiniciar.", 100, 100);
+        font.draw(batch, "Intentos: " + intentos, 100, 50);
         batch.end();
 
         if (Gdx.input.isTouched()) {

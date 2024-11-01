@@ -37,9 +37,5 @@ public class GameLluviaMenu extends Game {
         return higherScore;
     }
 
-    public void setHigherScore(int higherScore) {
-        this.higherScore = higherScore;
-    }
-
 
 }

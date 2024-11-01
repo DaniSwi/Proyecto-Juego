@@ -17,7 +17,7 @@ public class GameScreen implements Screen {
     private BitmapFont font;
     private Tarro tarro;
     private Lluvia lluvia;
-
+    private int intentos;
 
     //boolean activo = true;
 
@@ -68,9 +68,10 @@ public class GameScreen implements Screen {
         batch.begin();
         batch.draw(lluvia.getFondo(), 0, 0, camera.viewportWidth, camera.viewportHeight);
         //dibujar textos
+        int highScore = PlayerStats.getInstance().getHighScore();
         font.draw(batch, "Gotas totales: " + tarro.getPuntos(), 5, 475);
         font.draw(batch, "Vidas : " + tarro.getVidas(), 670, 475);
-        font.draw(batch, "HighScore : " + game.getHigherScore(), camera.viewportWidth/2-50, 475);
+        font.draw(batch, "HighScore : " + highScore, camera.viewportWidth/2-50, 475); //game.getHigherScore()
 
         if (!tarro.estaHerido()) {
             // movimiento del tarro desde teclado
@@ -81,9 +82,12 @@ public class GameScreen implements Screen {
             tarro.dibujarParaguas(batch);
 
         if (!lluvia.actualizarMovimiento(tarro)) {
+            //Actualizar intentos
+            PlayerStats.getInstance().updateIntentos();
             //actualizar HigherScore
-            if (game.getHigherScore() < tarro.getPuntos())
-                game.setHigherScore(tarro.getPuntos());
+            if (PlayerStats.getInstance().getHighScore() < tarro.getPuntos())
+                PlayerStats.getInstance().updateHighScore(tarro.getPuntos());
+             //   game.setHigherScore(tarro.getPuntos());
             //ir a la ventana de finde juego y destruir la actual
             game.setScreen(new GameOverScreen(game));
             dispose();
