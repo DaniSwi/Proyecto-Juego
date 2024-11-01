@@ -20,10 +20,12 @@ public class Tarro {
     private int tiempoHeridoMax = 50;
     private int tiempoHerido;
     private Paraguas paraguas;
+    private Sound sonidoParaguasRoto;
 
     public Tarro(Texture tex, Sound ss) {
         bucketImage = tex;
         sonidoHerido = ss;
+        this.sonidoParaguasRoto = Gdx.audio.newSound(Gdx.files.internal("paraguasRoto.wav"));
     }
 
     public int getVidas() {
@@ -59,8 +61,10 @@ public class Tarro {
     public void dañar() {
         if(paraguas != null && paraguas.estaCapturado()) {
             paraguas.dañoParaguas();
-            if (paraguas.getDurabilidadParaguas() < 1)
+            if (paraguas.getDurabilidadParaguas() < 1) {
+                sonidoParaguasRoto.play();
                 destruirParaguas();
+            }
         } else {
             vidas--;
             herido = true;
