@@ -17,15 +17,13 @@ public class Tarro {
     private int puntos = 0;
     private int velx = 400;
     private boolean herido = false;
-    private int tiempoHeridoMax = 50;
+    private int tiempoHeridoMax = 80;
     private int tiempoHerido;
     private Paraguas paraguas;
-    private Sound sonidoParaguasRoto;
 
     public Tarro(Texture tex, Sound ss) {
         bucketImage = tex;
         sonidoHerido = ss;
-        this.sonidoParaguasRoto = Gdx.audio.newSound(Gdx.files.internal("paraguasRoto.wav"));
     }
 
     public int getVidas() {
@@ -53,17 +51,12 @@ public class Tarro {
         bucket.height = 64;
     }
 
-    public void destruirParaguas() {
-        this.paraguas.getImagenParaguas().dispose();
-        this.paraguas = null;
-    }
-
     public void dañar() {
         if(paraguas != null && paraguas.estaCapturado()) {
             paraguas.dañoParaguas();
             if (paraguas.getDurabilidadParaguas() < 1) {
-                sonidoParaguasRoto.play();
-                destruirParaguas();
+                paraguas.destruir();
+                paraguas = null;
             }
         } else {
             vidas--;

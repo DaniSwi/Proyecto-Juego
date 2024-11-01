@@ -44,8 +44,7 @@ public class GameScreen implements Screen {
 
         Music rainMusic = Gdx.audio.newMusic(Gdx.files.internal("doudou.mp3"));
 
-        Sound u = Gdx.audio.newSound(Gdx.files.internal("umbrellaSfx.wav"));
-        lluvia = new Lluvia(gotaNormal,gotaBuena ,gotaMala, dropSound, rainMusic, u);
+        lluvia = new Lluvia(gotaNormal,gotaBuena ,gotaMala, dropSound, rainMusic);
 
         // camera
         camera = new OrthographicCamera();
@@ -77,18 +76,18 @@ public class GameScreen implements Screen {
             // movimiento del tarro desde teclado
             tarro.actualizarMovimiento();
         }
-            // caida de la lluvia
-            if (tarro.getParaguas() != null && tarro.getParaguas().estaCapturado())
-                tarro.dibujarParaguas(batch);
+        // caida de la lluvia
+        if (tarro.getParaguas() != null && tarro.getParaguas().estaCapturado())
+            tarro.dibujarParaguas(batch);
 
-            if (!lluvia.actualizarMovimiento(tarro)) {
-                //actualizar HigherScore
-                if (game.getHigherScore() < tarro.getPuntos())
-                    game.setHigherScore(tarro.getPuntos());
-                //ir a la ventana de finde juego y destruir la actual
-                game.setScreen(new GameOverScreen(game));
-                dispose();
-            }
+        if (!lluvia.actualizarMovimiento(tarro)) {
+            //actualizar HigherScore
+            if (game.getHigherScore() < tarro.getPuntos())
+                game.setHigherScore(tarro.getPuntos());
+            //ir a la ventana de finde juego y destruir la actual
+            game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
 
         tarro.dibujar(batch);
         lluvia.actualizarDibujoLluvia(batch);

@@ -18,6 +18,7 @@ public class Paraguas implements ObjetoCaible {
     private boolean capturado;
     private float velocidadCaida;
     private Sound sonidoAtrapar;
+    private Sound sonidoRoto;
 
     public Paraguas(Texture imagenParaguas, float velocidadCaida) {
         this.imagenParaguas = imagenParaguas;
@@ -30,6 +31,7 @@ public class Paraguas implements ObjetoCaible {
         this.area.height = 64;
         this.durabilidadParaguas = 3;
         this.sonidoAtrapar = Gdx.audio.newSound(Gdx.files.internal("umbrellaSfx.wav"));
+        this.sonidoRoto = Gdx.audio.newSound(Gdx.files.internal("paraguasRoto.wav"));
     }
 
     public int getDurabilidadParaguas() {return durabilidadParaguas;}
@@ -52,5 +54,11 @@ public class Paraguas implements ObjetoCaible {
 
     public void setCapturado() {
         this.capturado = true;
+    }
+
+    public void destruir() {
+        sonidoRoto.play();
+        this.capturado = false;
+        imagenParaguas.dispose();
     }
 }
