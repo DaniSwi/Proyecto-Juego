@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class Paraguas implements ObjetoCaible {
     private Rectangle area;
     private Texture imagenParaguas;
-    private int durabilidadParaguas = 3;
+    private int durabilidadParaguas;
     private boolean capturado;
     private float velocidadCaida;
 
@@ -27,13 +27,13 @@ public class Paraguas implements ObjetoCaible {
         this.area.y = 480;
         this.area.width = 69;
         this.area.height = 64;
+        this.durabilidadParaguas = 3;
     }
 
     public int getDurabilidadParaguas() {return durabilidadParaguas;}
 
     public void dañoParaguas() {
-        if(capturado)
-            --durabilidadParaguas;
+        --durabilidadParaguas;
     }
 
     public boolean estaCapturado() {return capturado;}
@@ -43,26 +43,6 @@ public class Paraguas implements ObjetoCaible {
             area.y -= velocidadCaida * Gdx.graphics.getDeltaTime();
         }
     }
-
-    public boolean capturar(Rectangle tarro) {
-        if(area.overlaps(tarro)) {
-            capturado = true;
-            return true;
-        }
-        return false;
-    }
-
-    public void dibujar(SpriteBatch batch) {
-        if(capturado) batch.draw(imagenParaguas, area.x, area.y);
-    }
-
-    public void actualizarPosicion(float x, float y) {
-        if(capturado) {
-            area.x = x;
-            area.y = y;
-        }
-    }
-
     public Texture getImagenParaguas() {return imagenParaguas;}
 
     public Rectangle getArea() {return area;}

@@ -51,10 +51,17 @@ public class Tarro {
         bucket.height = 64;
     }
 
+    public void destruirParaguas() {
+        this.paraguas.getImagenParaguas().dispose();
+        this.paraguas = null;
+    }
+
     public void dañar() {
-        if(paraguas != null && paraguas.getDurabilidadParaguas() > 0 && paraguas.estaCapturado())
+        if(paraguas != null && paraguas.estaCapturado()) {
             paraguas.dañoParaguas();
-        else {
+            if (paraguas.getDurabilidadParaguas() < 1)
+                destruirParaguas();
+        } else {
             vidas--;
             herido = true;
             tiempoHerido = tiempoHeridoMax;
@@ -86,9 +93,6 @@ public class Tarro {
         // que no se salga de los bordes izq y der
         if (bucket.x < 0) bucket.x = 0;
         if (bucket.x > 800 - 64) bucket.x = 800 - 64;
-        if (paraguas != null && paraguas.estaCapturado()) {
-            paraguas.actualizarPosicion(bucket.x, bucket.y + bucket.height);
-        }
     }
 
 
@@ -101,7 +105,7 @@ public class Tarro {
     }
 
     public void setParaguas(Paraguas paraguas) {
-        if(this.paraguas != null) {
+        if(this.paraguas == null) {
             this.paraguas = paraguas;
             this.paraguas.setCapturado();
         }
@@ -110,4 +114,13 @@ public class Tarro {
     public void aumentarVida(){
         ++vidas;
     }
+
+    public Paraguas getParaguas() {
+        return paraguas;
+    }
+
+    public void dibujarParaguas(SpriteBatch batch) {
+        batch.draw(paraguas.getImagenParaguas(), bucket.x, bucket.y + 32);
+    }
+
 }

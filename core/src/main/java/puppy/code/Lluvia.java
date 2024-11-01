@@ -76,7 +76,7 @@ public class Lluvia {
         lastDropTime = TimeUtils.nanoTime();
     }
 
-   public void actualizarMovimiento(Tarro tarro) {
+   public Boolean actualizarMovimiento(Tarro tarro) {
 	   // generar gotas de lluvia
 	   if(TimeUtils.nanoTime() - lastDropTime > 100000000) {
            crearGotaDeLluvia();
@@ -96,6 +96,8 @@ public class Lluvia {
                if(rainDropsType.get(i) instanceof Gota) {  //El objeto es una gota
                    if (rainDropsType.get(i) instanceof GotaMala) { // gota dañina
                        gotaMala.aplicarEfecto(tarro);
+                       if(tarro.getVidas() <= 0)
+                           return false;
                        rainDropsPos.removeIndex(i);
                        rainDropsType.removeIndex(i);
                    } else if(rainDropsType.get(i) instanceof GotaBuena) {
@@ -105,7 +107,7 @@ public class Lluvia {
                        rainDropsType.removeIndex(i);
                    }
                    else { // gota a recolectar
-                       tarro.sumarPuntos(10);
+                       gotaNormal.aplicarEfecto(tarro);
                        dropSound.play();
                        rainDropsPos.removeIndex(i);
                        rainDropsType.removeIndex(i);
@@ -117,6 +119,7 @@ public class Lluvia {
                }
            }
        }
+       return true;
    }
 
    public void actualizarDibujoLluvia(SpriteBatch batch) {
@@ -138,6 +141,14 @@ public class Lluvia {
 
    public Texture getFondo() {
         return fondo;
+   }
+
+   public void pausar() {
+        rainMusic.stop();
+   }
+
+   public void continuar() {
+        rainMusic.play();
    }
 
 }
