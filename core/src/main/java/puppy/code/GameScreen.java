@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen implements Screen {
@@ -73,12 +74,13 @@ public class GameScreen implements Screen {
         int highScore = PlayerStats.getInstance().getHighScore();
         font.draw(batch, "Gotas totales: " + tarro.getPuntos(), 5, 475);
         font.draw(batch, "Vidas : " + tarro.getVidas(), 670, 475);
-        font.draw(batch, "HighScore : " + highScore, camera.viewportWidth/2-50, 475); //game.getHigherScore()
+        font.draw(batch, "HighScore : " + highScore, camera.viewportWidth/2-50, 475);
 
         if (!tarro.estaHerido()) {
             // movimiento del tarro desde teclado
             tarro.actualizarMovimiento();
         }
+
         // caida de la lluvia
         if (tarro.getParaguas() != null && tarro.getParaguas().estaCapturado())
             tarro.dibujarParaguas(batch);
@@ -98,7 +100,14 @@ public class GameScreen implements Screen {
         tarro.dibujar(batch);
 
         // aca implementar boost activo lololol
-
+        if(tarro.tieneBoostActivo()) {
+            Array<Boost> boostActivos = tarro.getBoostsActivos();
+            float y = 400f;
+            for(Boost boost : boostActivos) {
+                font.draw(batch, boost.getNombreBoost() + ": " + boost.getTiempoRestante() + "s", 600, y);
+                y -= 20;
+            }
+        }
 
 
         lluvia.actualizarDibujoLluvia(batch);

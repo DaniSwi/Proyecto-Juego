@@ -15,6 +15,7 @@ public class PointsMultiplier implements Boost, ObjetoCaible {
     private float factorMultiplicador;
     private float tiempoRestante;
     private Sound sonido;
+    private final String nombreBoost = "MP";
 
     public PointsMultiplier(Texture texturaBoostXp) {
         this.texturaBoostXp = texturaBoostXp;
@@ -61,5 +62,12 @@ public class PointsMultiplier implements Boost, ObjetoCaible {
         tarro.activarMultiplicador(this);
     }
 
+    public String getNombreBoost() {
+        return nombreBoost;
+    }
+
+    public int getTiempoRestante() {
+        return (int)tiempoRestante;
+    }
 
 }

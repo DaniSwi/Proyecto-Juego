@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+
 
 
 public class Tarro {
@@ -134,4 +136,17 @@ public class Tarro {
         pointsMultiplier.activarSonido();
     }
 
+    public Boolean tieneBoostActivo() {
+        if(pointsMultiplier != null && pointsMultiplier.estaActivo())
+            return true;
+        return false;
+    }
+
+    public Array getBoostsActivos() {
+        Array<Boost> ar = new Array<Boost>();
+        if(pointsMultiplier != null && pointsMultiplier.estaActivo()) {
+            ar.add(pointsMultiplier);
+        }
+        return ar;
+    }
 }
