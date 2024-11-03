@@ -1,8 +1,8 @@
 package puppy.code;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -10,6 +10,18 @@ public abstract class Gota implements ObjetoCaible {
     private Texture imagenGota;
     private Rectangle area;
     private float velocidadCaida;
+    private Sound sonidoEfecto;
+
+    public Gota(Texture imagenGota, float velocidadCaida, Sound sonidoEfecto) {
+        this.imagenGota = imagenGota;
+        this.velocidadCaida = velocidadCaida;
+        this.area = new Rectangle();
+        this.area.x = MathUtils.random(0, 800-64);
+        this.area.y = 480;
+        this.area.width = 64;
+        this.area.height = 64;
+        this.sonidoEfecto = sonidoEfecto;
+    }
 
     public Gota(Texture imagenGota, float velocidadCaida) {
         this.imagenGota = imagenGota;
@@ -25,14 +37,12 @@ public abstract class Gota implements ObjetoCaible {
         area.y -= velocidadCaida * Gdx.graphics.getDeltaTime();
     }
 
-    public void dibujar(SpriteBatch batch) {
-        batch.draw(imagenGota, area.x, area.y);
-    }
-
-    public Rectangle getArea() {return area;}
-
     public abstract void aplicarEfecto(Tarro tarro);
 
     public Texture getImagenGota() {return imagenGota;}
+
+    public void reproducirSonido(){
+        sonidoEfecto.play();
+    }
 
 }

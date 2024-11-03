@@ -20,6 +20,7 @@ public class Tarro {
     private int tiempoHeridoMax = 80;
     private int tiempoHerido;
     private Paraguas paraguas;
+    private PointsMultiplier pointsMultiplier;
 
     public Tarro(Texture tex, Sound ss) {
         bucketImage = tex;
@@ -39,7 +40,11 @@ public class Tarro {
     }
 
     public void sumarPuntos(int pp) {
-        puntos += pp;
+        if(pointsMultiplier != null && pointsMultiplier.estaActivo())
+            puntos += (int)(pp * pointsMultiplier.getFactorMultiplicador());
+        else {
+            puntos += pp;
+        }
     }
 
 
@@ -118,6 +123,9 @@ public class Tarro {
 
     public void dibujarParaguas(SpriteBatch batch) {
         batch.draw(paraguas.getImagenParaguas(), bucket.x, bucket.y + 32);
+    }
+    public void activarMultiplicador(PointsMultiplier multiplicador) {
+        this.pointsMultiplier = multiplicador;
     }
 
 }
