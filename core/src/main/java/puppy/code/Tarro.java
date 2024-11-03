@@ -41,7 +41,7 @@ public class Tarro {
 
     public void sumarPuntos(int pp) {
         if(pointsMultiplier != null && pointsMultiplier.estaActivo())
-            puntos += (int)(pp * pointsMultiplier.getFactorMultiplicador());
+            puntos = puntos + (int)(pp * pointsMultiplier.getFactorMultiplicador());
         else {
             puntos += pp;
         }
@@ -78,6 +78,9 @@ public class Tarro {
             batch.draw(bucketImage, bucket.x, bucket.y + MathUtils.random(-5, 5));
             tiempoHerido--;
             if (tiempoHerido <= 0) herido = false;
+        }
+        if(pointsMultiplier != null && pointsMultiplier.estaActivo()) {
+            pointsMultiplier.actualizar();
         }
     }
 
@@ -124,8 +127,11 @@ public class Tarro {
     public void dibujarParaguas(SpriteBatch batch) {
         batch.draw(paraguas.getImagenParaguas(), bucket.x, bucket.y + 32);
     }
+
     public void activarMultiplicador(PointsMultiplier multiplicador) {
         this.pointsMultiplier = multiplicador;
+        pointsMultiplier.boost();
+        pointsMultiplier.activarSonido();
     }
 
 }

@@ -19,7 +19,6 @@ public class Lluvia {
     private GotaMala gotaMala;
     private Music rainMusic;
     private Texture fondo;
-    private Array<Boost> boosts;
 
 
     public Lluvia(GotaNormal gotaNormal, GotaBuena gotaBuena, GotaMala gotaMala, Music mm) {
@@ -34,10 +33,9 @@ public class Lluvia {
         rainDropsType = new Array<ObjetoCaible>();
         //rainDropsType = new Array<Integer>();
         rainDropsPos = new Array<Rectangle>();
-        boosts = new Array<Boost>();
         crearGotaDeLluvia();
         crearParaguas();
-        //crearBoosts();
+        crearBoosts();
         // start the playback of the background music immediately
         rainMusic.setLooping(true);
         rainMusic.play();
@@ -73,26 +71,26 @@ public class Lluvia {
         lastDropTime = TimeUtils.nanoTime();
     }
 
-    /* private void crearBoosts() {
+    private void crearBoosts() {
         Rectangle boostCaer = new Rectangle();
         boostCaer.x = MathUtils.random(0, 800 - 64);
         boostCaer.y = 480;
         boostCaer.width = 64;
         boostCaer.height = 64;
-        rainDropsPos.add(boostCaer);
         int random = MathUtils.random(0, 100);
-        if(random >= 0 && random <= 2) {
+        if (random >= 0 && random <= 2) {
             PointsMultiplier boost = new PointsMultiplier(new Texture(Gdx.files.internal("spriteBoostMultiplicador.png")));
-            boosts.add(boost);
+            rainDropsType.add(boost);
+            rainDropsPos.add(boostCaer);
         }
-    } */
+    }
 
     public Boolean actualizarMovimiento(Tarro tarro) {
         // generar gotas de lluvia
         if (TimeUtils.nanoTime() - lastDropTime > 100000000) {
             crearGotaDeLluvia();
             crearParaguas();
-           // crearBoosts();
+            crearBoosts();
         }
         if (!tarro.estaHerido()) {
             // revisar si las gotas cayeron al suelo o chocaron con el tarro
@@ -121,10 +119,15 @@ public class Lluvia {
                             rainDropsPos.removeIndex(i);
                             rainDropsType.removeIndex(i);
                         }
-                    } else { //El objeto es un paraguas
+                    } else if(rainDropsType.get(i) instanceof Paraguas){ //El objeto es un paraguas
                         tarro.setParaguas((Paraguas) rainDropsType.get(i));
                         rainDropsPos.removeIndex(i);
                         rainDropsType.removeIndex(i);
+                    } else { // El objeto es un boost
+                        PointsMultiplier boost = (PointsMultiplier)rainDropsType.get(i);
+                        tarro.activarMultiplicador(boost);
+                        rainDropsType.removeIndex(i);
+                        rainDropsPos.removeIndex(i);
                     }
                 }
             }
@@ -138,9 +141,12 @@ public class Lluvia {
             if (rainDropsType.get(i) instanceof Gota) { // Gota dañina y gota normal (y gota buena)
                 Gota gota = (Gota) rainDropsType.get(i);
                 batch.draw(gota.getImagenGota(), objetoLLuvia.x, objetoLLuvia.y);
-            } else{ //paraguas
+            } else if (rainDropsType.get(i) instanceof Paraguas) { //paraguas
                 Paraguas paraguas1 = (Paraguas) rainDropsType.get(i);
                 batch.draw(paraguas1.getImagenParaguas(), objetoLLuvia.x, objetoLLuvia.y);
+            } else { //boost
+                Boost boost = (Boost)rainDropsType.get(i);
+                batch.draw(boost.getImagenBoost(), objetoLLuvia.x, objetoLLuvia.y);
             }
         }
     }
