@@ -59,13 +59,13 @@ public class Lluvia {
         rainDropsPos.add(objetoLLuvia);
         int random = MathUtils.random(0, 100);
         if (random >= 0 && random <= 30) {
-            GotaMala gota = new GotaMala(gotaMala.getImagenGota(), 30);
+            GotaMala gota = new GotaMala(gotaMala.getImagenGota(), 30, gotaMala.getSonidoEfecto());
             rainDropsType.add(gota);
         } else if (random >= 31 && random <= 99) {
-            GotaNormal gota = new GotaNormal(gotaNormal.getImagenGota(), 30);
+            GotaNormal gota = new GotaNormal(gotaNormal.getImagenGota(), 30, gotaNormal.getSonidoEfecto());
             rainDropsType.add(gota);
         } else {
-            GotaBuena gota = new GotaBuena(gotaBuena.getImagenGota(), 30);
+            GotaBuena gota = new GotaBuena(gotaBuena.getImagenGota(), 30, gotaBuena.getSonidoEfecto());
             rainDropsType.add(gota);
         }
         lastDropTime = TimeUtils.nanoTime();
@@ -103,32 +103,11 @@ public class Lluvia {
                     rainDropsType.removeIndex(i);
                 }
                 if (objetoLluvia.overlaps(tarro.getArea())) { //El objeto choca con el tarro
-                    if (rainDropsType.get(i) instanceof Gota) {  //El objeto es una gota
-                        if (rainDropsType.get(i) instanceof GotaMala) { // gota dañina
-                            gotaMala.aplicarEfecto(tarro);
-                            if (tarro.getVidas() <= 0)
-                                return false;
-                            rainDropsPos.removeIndex(i);
-                            rainDropsType.removeIndex(i);
-                        } else if (rainDropsType.get(i) instanceof GotaBuena) {
-                            gotaBuena.aplicarEfecto(tarro);
-                            rainDropsPos.removeIndex(i);
-                            rainDropsType.removeIndex(i);
-                        } else { // gota a recolectar
-                            gotaNormal.aplicarEfecto(tarro);
-                            rainDropsPos.removeIndex(i);
-                            rainDropsType.removeIndex(i);
-                        }
-                    } else if(rainDropsType.get(i) instanceof Paraguas){ //El objeto es un paraguas
-                        tarro.setParaguas((Paraguas) rainDropsType.get(i));
-                        rainDropsPos.removeIndex(i);
-                        rainDropsType.removeIndex(i);
-                    } else { // El objeto es un boost
-                        PointsMultiplier boost = (PointsMultiplier)rainDropsType.get(i);
-                        tarro.activarMultiplicador(boost);
-                        rainDropsType.removeIndex(i);
-                        rainDropsPos.removeIndex(i);
-                    }
+                    rainDropsType.get(i).aplicarEfecto(tarro);
+                    if(tarro.getVidas() <= 0)
+                        return false;
+                    rainDropsType.removeIndex(i);
+                    rainDropsPos.removeIndex(i);
                 }
             }
         }
@@ -138,16 +117,7 @@ public class Lluvia {
     public void actualizarDibujoLluvia(SpriteBatch batch) {
         for (int i = 0; i < rainDropsPos.size; i++) {
             Rectangle objetoLLuvia = rainDropsPos.get(i); //Puede ser, gota normal, gota mala o un paraguas! careful
-            if (rainDropsType.get(i) instanceof Gota) { // Gota dañina y gota normal (y gota buena)
-                Gota gota = (Gota) rainDropsType.get(i);
-                batch.draw(gota.getImagenGota(), objetoLLuvia.x, objetoLLuvia.y);
-            } else if (rainDropsType.get(i) instanceof Paraguas) { //paraguas
-                Paraguas paraguas1 = (Paraguas) rainDropsType.get(i);
-                batch.draw(paraguas1.getImagenParaguas(), objetoLLuvia.x, objetoLLuvia.y);
-            } else { //boost
-                Boost boost = (Boost)rainDropsType.get(i);
-                batch.draw(boost.getImagenBoost(), objetoLLuvia.x, objetoLLuvia.y);
-            }
+            batch.draw(rainDropsType.get(i).getTexture(), objetoLLuvia.x, objetoLLuvia.y);
         }
     }
 

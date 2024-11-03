@@ -96,6 +96,11 @@ public class GameScreen implements Screen {
         }
 
         tarro.dibujar(batch);
+
+        // aca implementar boost activo lololol
+
+
+
         lluvia.actualizarDibujoLluvia(batch);
 
         batch.end();

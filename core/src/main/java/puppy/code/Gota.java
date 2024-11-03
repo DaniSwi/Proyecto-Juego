@@ -45,4 +45,12 @@ public abstract class Gota implements ObjetoCaible {
         sonidoEfecto.play();
     }
 
+    public Sound getSonidoEfecto(){
+        return sonidoEfecto;
+    }
+
+    public Texture getTexture() {
+        return imagenGota;
+    }
+
 }

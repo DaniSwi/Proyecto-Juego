@@ -49,12 +49,17 @@ public class PointsMultiplier implements Boost, ObjetoCaible {
 
     public void caer(){}
 
-    public Texture getImagenBoost(){
+    public Texture getTexture(){
         return texturaBoostXp;
     }
 
     public void activarSonido() {
         sonido.play();
     }
+
+    public void aplicarEfecto(Tarro tarro) {
+        tarro.activarMultiplicador(this);
+    }
+
 
 }

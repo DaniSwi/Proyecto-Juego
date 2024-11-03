@@ -19,4 +19,5 @@ public class GotaNormal extends Gota {
         reproducirSonido();
         tarro.sumarPuntos(10);
     }
+
 }

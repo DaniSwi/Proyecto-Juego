@@ -61,4 +61,12 @@ public class Paraguas implements ObjetoCaible {
         this.capturado = false;
         imagenParaguas.dispose();
     }
+
+    public void aplicarEfecto(Tarro tarro) {
+        tarro.setParaguas(this);
+    }
+
+    public Texture getTexture() {
+        return imagenParaguas;
+    }
 }

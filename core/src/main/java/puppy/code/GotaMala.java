@@ -18,4 +18,5 @@ public class GotaMala extends Gota {
         reproducirSonido();
         tarro.dañar();
     }
+
 }
