@@ -77,9 +77,13 @@ public class Lluvia {
         boostCaer.y = 480;
         boostCaer.width = 64;
         boostCaer.height = 64;
-        int random = MathUtils.random(0, 100);
-        if (random >= 0 && random <= 2) {
+        int random = MathUtils.random(0, 1000);
+        if (random >= 0 && random <= 20) {
             PointsMultiplier boost = new PointsMultiplier(new Texture(Gdx.files.internal("spriteBoostMultiplicador.png")));
+            rainDropsType.add(boost);
+            rainDropsPos.add(boostCaer);
+        } else if(random > 20 && random <= 25) {
+            InvencibilidadPower boost = new InvencibilidadPower(new Texture(Gdx.files.internal("invencibilidad.png")));
             rainDropsType.add(boost);
             rainDropsPos.add(boostCaer);
         }
@@ -116,7 +120,7 @@ public class Lluvia {
 
     public void actualizarDibujoLluvia(SpriteBatch batch) {
         for (int i = 0; i < rainDropsPos.size; i++) {
-            Rectangle objetoLLuvia = rainDropsPos.get(i); //Puede ser, gota normal, gota mala o un paraguas! careful
+            Rectangle objetoLLuvia = rainDropsPos.get(i);
             batch.draw(rainDropsType.get(i).getTexture(), objetoLLuvia.x, objetoLLuvia.y);
         }
     }

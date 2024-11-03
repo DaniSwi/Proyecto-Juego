@@ -3,6 +3,7 @@ package puppy.code;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -31,8 +32,9 @@ public class MainMenuScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+        batch.draw(new Texture(Gdx.files.internal("yokoso.png")), 0, 0, 800, 480);
         font.getData().setScale(2, 2);
-        font.draw(batch, "Bienvenido a Recolecta Gotas ", 100, camera.viewportHeight/2+50);
+        font.draw(batch, "Bienvenido a Gotas Locas ", 100, camera.viewportHeight/2+50);
         font.draw(batch, "Toca en cualquier lugar para comenzar!", 100, camera.viewportHeight/2-50);
 
         batch.end();

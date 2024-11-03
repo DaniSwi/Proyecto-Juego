@@ -46,6 +46,7 @@ public class GameScreen implements Screen {
         GotaBuena gotaBuena = new GotaBuena(gotaB, 30, s3);
 
         Music rainMusic = Gdx.audio.newMusic(Gdx.files.internal("doudou.mp3"));
+        rainMusic.setVolume(0.25f);
 
         lluvia = new Lluvia(gotaNormal, gotaBuena ,gotaMala, rainMusic);
 

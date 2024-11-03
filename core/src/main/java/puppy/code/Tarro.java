@@ -9,8 +9,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
-
-
 public class Tarro {
     private Rectangle bucket;
     private Texture bucketImage;
@@ -23,6 +21,7 @@ public class Tarro {
     private int tiempoHerido;
     private Paraguas paraguas;
     private PointsMultiplier pointsMultiplier;
+    private InvencibilidadPower invencibilidadPower;
 
     public Tarro(Texture tex, Sound ss) {
         bucketImage = tex;
@@ -59,17 +58,19 @@ public class Tarro {
     }
 
     public void dañar() {
-        if(paraguas != null && paraguas.estaCapturado()) {
-            paraguas.dañoParaguas();
-            if (paraguas.getDurabilidadParaguas() < 1) {
-                paraguas.destruir();
-                paraguas = null;
+        if(invencibilidadPower == null || !invencibilidadPower.estaActivo()) {
+            if (paraguas != null && paraguas.estaCapturado()) {
+                paraguas.dañoParaguas();
+                if (paraguas.getDurabilidadParaguas() < 1) {
+                    paraguas.destruir();
+                    paraguas = null;
+                }
+            } else {
+                vidas--;
+                herido = true;
+                tiempoHerido = tiempoHeridoMax;
+                sonidoHerido.play();
             }
-        } else {
-            vidas--;
-            herido = true;
-            tiempoHerido = tiempoHeridoMax;
-            sonidoHerido.play();
         }
     }
 
@@ -81,9 +82,10 @@ public class Tarro {
             tiempoHerido--;
             if (tiempoHerido <= 0) herido = false;
         }
-        if(pointsMultiplier != null && pointsMultiplier.estaActivo()) {
+        if(pointsMultiplier != null && pointsMultiplier.estaActivo())
             pointsMultiplier.actualizar();
-        }
+        if(invencibilidadPower != null && invencibilidadPower.estaActivo())
+            invencibilidadPower.actualizar();
     }
 
     public void actualizarMovimiento() {
@@ -137,15 +139,23 @@ public class Tarro {
     }
 
     public Boolean tieneBoostActivo() {
-        if(pointsMultiplier != null && pointsMultiplier.estaActivo())
+        if((pointsMultiplier != null && pointsMultiplier.estaActivo()) || (invencibilidadPower != null && invencibilidadPower.estaActivo()))
             return true;
         return false;
+    }
+
+    public void activarInvencibilidad(InvencibilidadPower invencibilidad) {
+        this.invencibilidadPower = invencibilidad;
+        invencibilidad.boost();
+        invencibilidad.activarSonido();
     }
 
     public Array getBoostsActivos() {
         Array<Boost> ar = new Array<Boost>();
         if(pointsMultiplier != null && pointsMultiplier.estaActivo()) {
             ar.add(pointsMultiplier);
+        } if(invencibilidadPower != null && invencibilidadPower.estaActivo()){
+            ar.add(invencibilidadPower);
         }
         return ar;
     }
