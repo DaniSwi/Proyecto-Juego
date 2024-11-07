@@ -9,7 +9,8 @@ public class EfectoGotaBuena implements EstrategiaEfecto {
     }
 
     public void aplicarEfecto(Tarro tarro) {
-        gotaBuena.aplicarEfecto(tarro);
+        gotaBuena.reproducirSonido();
+        tarro.aumentarVida();
     }
 
 }

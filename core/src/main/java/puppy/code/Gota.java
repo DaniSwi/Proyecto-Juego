@@ -54,8 +54,12 @@ public abstract class Gota implements ObjetoCaible {
     public Texture getTexture() {
         return imagenGota;
     }
+
     public void setEstrategiaEfecto(EstrategiaEfecto estrategiaEfecto) {
         this.estrategiaEfecto = estrategiaEfecto;
     }
 
+    public EstrategiaEfecto getEstrategiaEfecto() {
+        return estrategiaEfecto;
+    }
 }

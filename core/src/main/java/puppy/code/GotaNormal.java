@@ -15,9 +15,8 @@ public class GotaNormal extends Gota {
 
     @Override
     public void aplicarEfecto(Tarro tarro) {
-        //Se le suma 10 puntos por agarrar la gota correctamente
-        reproducirSonido();
-        tarro.sumarPuntos(10);
+        EstrategiaEfecto estrategiaEfecto = this.getEstrategiaEfecto();
+        estrategiaEfecto.aplicarEfecto(tarro);
     }
 
 }

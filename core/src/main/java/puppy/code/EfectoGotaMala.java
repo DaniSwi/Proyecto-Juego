@@ -9,6 +9,7 @@ public class EfectoGotaMala implements EstrategiaEfecto {
     }
 
     public void aplicarEfecto(Tarro tarro) {
-        gotaMala.aplicarEfecto(tarro);
+        gotaMala.reproducirSonido();
+        tarro.dañar();
     }
 }

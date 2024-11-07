@@ -9,6 +9,7 @@ public class EfectoGotaNormal implements EstrategiaEfecto {
     }
 
     public void aplicarEfecto(Tarro tarro) {
-        gotaNormal.aplicarEfecto(tarro);
+        gotaNormal.reproducirSonido();
+        tarro.sumarPuntos(10);
     }
 }

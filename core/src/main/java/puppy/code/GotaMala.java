@@ -15,8 +15,8 @@ public class GotaMala extends Gota {
 
     @Override
     public void aplicarEfecto(Tarro tarro) {
-        reproducirSonido();
-        tarro.dañar();
+        EstrategiaEfecto estrategiaEfecto = this.getEstrategiaEfecto();
+        estrategiaEfecto.aplicarEfecto(tarro);
     }
 
 }

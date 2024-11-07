@@ -18,7 +18,8 @@ public class Lluvia {
     private GotaMala gotaMala;
     private Music rainMusic;
     private Texture fondo;
-    EstrategiaEfecto estrategia;
+    private EstrategiaEfecto estrategia;
+    private GotaFactory gotafactory;
 
     public Lluvia(GotaNormal gotaNormal, GotaBuena gotaBuena, GotaMala gotaMala, Music mm) {
         rainMusic = mm;
@@ -26,13 +27,14 @@ public class Lluvia {
         this.gotaBuena = gotaBuena;
         this.gotaMala = gotaMala;
         this.fondo = new Texture(Gdx.files.internal("Fondo.png"));
+        this.gotafactory = new GotaFactoryGame();
     }
 
     public void crear() {
         rainDropsType = new Array<ObjetoCaible>();
         //rainDropsType = new Array<Integer>();
         rainDropsPos = new Array<Rectangle>();
-        crearGotaDeLluvia();
+        crearGotasDeLluvia();
         crearParaguas();
         crearBoosts();
         // start the playback of the background music immediately
@@ -49,7 +51,7 @@ public class Lluvia {
         }
     }
 
-    private void crearGotaDeLluvia() {
+    private void crearGotasDeLluvia() {
         Rectangle objetoLLuvia = new Rectangle();
         objetoLLuvia.x = MathUtils.random(0, 800 - 64);
         objetoLLuvia.y = 480;
@@ -58,16 +60,16 @@ public class Lluvia {
         rainDropsPos.add(objetoLLuvia);
         int random = MathUtils.random(0, 100);
         if (random >= 0 && random <= 30) {
-            GotaMala gota = new GotaMala(gotaMala.getImagenGota(), 30, gotaMala.getSonidoEfecto());
-            estrategia = new EfectoGotaMala(gota);
+            Gota gota = gotafactory.crearGotaMala();
+            gota.setEstrategiaEfecto(new EfectoGotaMala((GotaMala) gota));
             rainDropsType.add(gota);
         } else if (random >= 31 && random <= 99) {
-            GotaNormal gota = new GotaNormal(gotaNormal.getImagenGota(), 30, gotaNormal.getSonidoEfecto());
-            estrategia = new EfectoGotaNormal(gota);
+            Gota gota = gotafactory.crearGotaNormal();
+            gota.setEstrategiaEfecto(new EfectoGotaNormal((GotaNormal) gota));
             rainDropsType.add(gota);
         } else {
-            GotaBuena gota = new GotaBuena(gotaBuena.getImagenGota(), 30, gotaBuena.getSonidoEfecto());
-            estrategia = new EfectoGotaBuena(gota);
+            Gota gota = gotafactory.crearGotaBuena();
+            gota.setEstrategiaEfecto(new EfectoGotaBuena((GotaBuena) gota));
             rainDropsType.add(gota);
         }
         lastDropTime = TimeUtils.nanoTime();
@@ -94,7 +96,7 @@ public class Lluvia {
     public Boolean actualizarMovimiento(Tarro tarro) {
         // generar gotas de lluvia
         if (TimeUtils.nanoTime() - lastDropTime > 100000000) {
-            crearGotaDeLluvia();
+            crearGotasDeLluvia();
             crearParaguas();
             crearBoosts();
         }
