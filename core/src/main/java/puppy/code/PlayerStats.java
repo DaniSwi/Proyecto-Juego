@@ -1,6 +1,6 @@
 package puppy.code;
 
-public class PlayerStats {
+public class PlayerStats { //Patron singleton
     private static PlayerStats instance;
     private int highScore;
     private int intentos;

@@ -2,7 +2,6 @@ package puppy.code;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -19,7 +18,7 @@ public class Lluvia {
     private GotaMala gotaMala;
     private Music rainMusic;
     private Texture fondo;
-
+    EstrategiaEfecto estrategia;
 
     public Lluvia(GotaNormal gotaNormal, GotaBuena gotaBuena, GotaMala gotaMala, Music mm) {
         rainMusic = mm;
@@ -60,12 +59,15 @@ public class Lluvia {
         int random = MathUtils.random(0, 100);
         if (random >= 0 && random <= 30) {
             GotaMala gota = new GotaMala(gotaMala.getImagenGota(), 30, gotaMala.getSonidoEfecto());
+            estrategia = new EfectoGotaMala(gota);
             rainDropsType.add(gota);
         } else if (random >= 31 && random <= 99) {
             GotaNormal gota = new GotaNormal(gotaNormal.getImagenGota(), 30, gotaNormal.getSonidoEfecto());
+            estrategia = new EfectoGotaNormal(gota);
             rainDropsType.add(gota);
         } else {
             GotaBuena gota = new GotaBuena(gotaBuena.getImagenGota(), 30, gotaBuena.getSonidoEfecto());
+            estrategia = new EfectoGotaBuena(gota);
             rainDropsType.add(gota);
         }
         lastDropTime = TimeUtils.nanoTime();

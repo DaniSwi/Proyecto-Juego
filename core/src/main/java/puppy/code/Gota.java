@@ -7,10 +7,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Gota implements ObjetoCaible {
+
     private Texture imagenGota;
     private Rectangle area;
     private float velocidadCaida;
     private Sound sonidoEfecto;
+    private EstrategiaEfecto estrategiaEfecto;
 
     public Gota(Texture imagenGota, float velocidadCaida, Sound sonidoEfecto) {
         this.imagenGota = imagenGota;
@@ -51,6 +53,9 @@ public abstract class Gota implements ObjetoCaible {
 
     public Texture getTexture() {
         return imagenGota;
+    }
+    public void setEstrategiaEfecto(EstrategiaEfecto estrategiaEfecto) {
+        this.estrategiaEfecto = estrategiaEfecto;
     }
 
 }

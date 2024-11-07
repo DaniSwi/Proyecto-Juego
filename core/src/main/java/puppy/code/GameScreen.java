@@ -12,15 +12,14 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen implements Screen {
+
     final GameLluviaMenu game;
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private BitmapFont font;
     private Tarro tarro;
     private Lluvia lluvia;
-    private int intentos;
 
-    //boolean activo = true;
 
     public GameScreen(final GameLluviaMenu game) {
         this.game = game;
@@ -105,7 +104,10 @@ public class GameScreen implements Screen {
             Array<Boost> boostActivos = tarro.getBoostsActivos();
             float y = 400f;
             for(Boost boost : boostActivos) {
-                font.draw(batch, boost.getNombreBoost() + ": " + boost.getTiempoRestante() + "s", 600, y);
+                if(boost instanceof Dash || boost instanceof Fogueo)
+                    font.draw(batch, boost.getNombreBoost() + ": " + boost.getTiempoRestante(), 600, y);
+                else
+                    font.draw(batch, boost.getNombreBoost() + ": " + boost.getTiempoRestante() + "s", 600, y);
                 y -= 20;
             }
         }

@@ -22,6 +22,8 @@ public class Tarro {
     private Paraguas paraguas;
     private PointsMultiplier pointsMultiplier;
     private InvencibilidadPower invencibilidadPower;
+    private Dash dash;
+    private Fogueo fogueo;
 
     public Tarro(Texture tex, Sound ss) {
         bucketImage = tex;
@@ -151,12 +153,15 @@ public class Tarro {
     }
 
     public Array getBoostsActivos() {
-        Array<Boost> ar = new Array<Boost>();
+        Array ar = new Array();
         if(pointsMultiplier != null && pointsMultiplier.estaActivo()) {
             ar.add(pointsMultiplier);
         } if(invencibilidadPower != null && invencibilidadPower.estaActivo()){
             ar.add(invencibilidadPower);
+        } if(fogueo != null && fogueo.getTiempoRestante() > 0) {
+            ar.add(fogueo);
         }
         return ar;
     }
+
 }
