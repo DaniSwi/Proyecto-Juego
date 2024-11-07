@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Fogueo implements Boost, ObjetoCaible {
 
-    private final String nombre = "fogueos";
+    private final String nombre = "Fogueos";
     private Texture imagenFogueo;
     private boolean activo;
     private int usosRestantes;
@@ -35,7 +35,7 @@ public class Fogueo implements Boost, ObjetoCaible {
 
     }
 
-    public void boost() {
+    public void boost(Tarro tarro) {
         this.activo = true;
         this.usosRestantes = 3;
     }

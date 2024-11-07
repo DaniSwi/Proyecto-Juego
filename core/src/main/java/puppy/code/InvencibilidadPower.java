@@ -19,7 +19,7 @@ public class InvencibilidadPower implements Boost, ObjetoCaible{
         this.sonido = Gdx.audio.newSound(Gdx.files.internal("boostInvencible.mp3"));
     }
 
-    public void boost() {
+    public void boost(Tarro tarro) {
         this.activo = true;
         this.tiempoRestante = duracionBoost + 3;
     }

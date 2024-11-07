@@ -36,10 +36,10 @@ public class GameOverScreen implements Screen {
         batch.begin();
         sonido.setVolume(0.2f);
         sonido.play();
-        batch.draw(fondo, 250, 100);
+        batch.draw(fondo, 0, 0);
 
         int intentos = PlayerStats.getInstance().getIntentos();
-        font.draw(batch, "GAME                                                              OVER ", 100, 200);
+        font.draw(batch, "GAME                                           OVER ", 100, 200);
         font.draw(batch, "Toca en cualquier lado para reiniciar.", 100, 100);
         font.draw(batch, "Intentos: " + intentos, 100, 50);
         batch.end();

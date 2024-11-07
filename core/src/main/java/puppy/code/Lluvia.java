@@ -90,6 +90,10 @@ public class Lluvia {
             InvencibilidadPower boost = new InvencibilidadPower(new Texture(Gdx.files.internal("invencibilidad.png")));
             rainDropsType.add(boost);
             rainDropsPos.add(boostCaer);
+        } else if(random > 25 && random <= 30) {
+            Dash boost = new Dash(new Texture(Gdx.files.internal("dash.png")));
+            rainDropsType.add(boost);
+            rainDropsPos.add(boostCaer);
         }
     }
 

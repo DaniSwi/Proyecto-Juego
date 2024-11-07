@@ -99,8 +99,23 @@ public class Tarro {
 			      bucket.x = touchPos.x - 64 / 2;
 			}*/
         //movimiento desde teclado
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) bucket.x -= velx * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) bucket.x += velx * Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            bucket.x -= velx * Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            bucket.x += velx * Gdx.graphics.getDeltaTime();
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Q) && !herido && dash != null && dash.estaActivo()) {
+            bucket.x -= dash.getVelocidadDash() * 0.3f;
+            dash.quitarUso();
+            if(dash.getTiempoRestante() <= 0)
+                dash = null;
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.E) && dash != null && dash.estaActivo()) {
+            bucket.x += dash.getVelocidadDash() * 0.3f;
+            dash.quitarUso();
+            if(dash.getTiempoRestante() <= 0)
+                dash = null;
+        }
         // que no se salga de los bordes izq y der
         if (bucket.x < 0) bucket.x = 0;
         if (bucket.x > 800 - 64) bucket.x = 800 - 64;
@@ -136,19 +151,19 @@ public class Tarro {
 
     public void activarMultiplicador(PointsMultiplier multiplicador) {
         this.pointsMultiplier = multiplicador;
-        pointsMultiplier.boost();
+        pointsMultiplier.boost(this);
         pointsMultiplier.activarSonido();
     }
 
     public Boolean tieneBoostActivo() {
-        if((pointsMultiplier != null && pointsMultiplier.estaActivo()) || (invencibilidadPower != null && invencibilidadPower.estaActivo()))
+        if((pointsMultiplier != null && pointsMultiplier.estaActivo()) || (invencibilidadPower != null && invencibilidadPower.estaActivo()) || (dash != null && dash.estaActivo()))
             return true;
         return false;
     }
 
     public void activarInvencibilidad(InvencibilidadPower invencibilidad) {
         this.invencibilidadPower = invencibilidad;
-        invencibilidad.boost();
+        invencibilidad.boost(this);
         invencibilidad.activarSonido();
     }
 
@@ -160,8 +175,14 @@ public class Tarro {
             ar.add(invencibilidadPower);
         } if(fogueo != null && fogueo.getTiempoRestante() > 0) {
             ar.add(fogueo);
+        } if(dash != null && dash.getTiempoRestante() > 0) {
+            ar.add(dash);
         }
         return ar;
+    }
+
+    public void activarDash(Dash dash) {
+        this.dash = dash;
     }
 
 }

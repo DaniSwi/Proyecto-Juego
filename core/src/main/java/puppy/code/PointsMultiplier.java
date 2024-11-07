@@ -25,7 +25,7 @@ public class PointsMultiplier implements Boost, ObjetoCaible {
         this.sonido = Gdx.audio.newSound(Gdx.files.internal("boostPuntosSonido.mp3"));
     }
 
-    public void boost() {
+    public void boost(Tarro tarro) {
         this.activo = true;
         this.tiempoRestante = duracionBoost;
     }
