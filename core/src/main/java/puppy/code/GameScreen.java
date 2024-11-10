@@ -19,6 +19,8 @@ public class GameScreen implements Screen {
     private BitmapFont font;
     private Tarro tarro;
     private Lluvia lluvia;
+    private boolean easterEggFound = false;
+    private final Texture f = new Texture(Gdx.files.internal("lol.png"));
 
     public GameScreen(final GameLluviaMenu game) {
         this.game = game;
@@ -95,6 +97,23 @@ public class GameScreen implements Screen {
             //ir a la ventana de finde juego y destruir la actual
             game.setScreen(new GameOverScreen(game));
             dispose();
+        }
+
+        if(tarro.getPuntos() >= 10000) {
+            if(!easterEggFound) {
+                easterEggFound = true;
+                Music s = Gdx.audio.newMusic(Gdx.files.internal("treachery.mp3"));
+                lluvia.pausar();
+                lluvia.pararLluvia();
+                s.setLooping(true);
+                s.setVolume(0.5f);
+                s.play();
+            }
+            batchPr.draw(f, 0, 0, camera.viewportWidth, camera.viewportHeight);
+            font.setColor(1, 1, 1,1);
+            font.draw(batchPr, "FELICIDADES, DESBLOQUEASTE", 0, 240);
+            font.draw(batchPr, "EL EASTER EGG MÁS INÚTIL", 0, 210);
+            font.draw(batchPr, "RECLAMA TUS 1000 PESOS AL CREADOR DEL JUEGO (YO)", 0, 180);
         }
 
         tarro.dibujar(batchPr);

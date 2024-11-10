@@ -22,6 +22,7 @@ public class Lluvia {
     private Fogueo fogueo;
     private float tEspera;
     private boolean cond;
+    private boolean parar;
 
     public Lluvia(GotaNormal gotaNormal, GotaBuena gotaBuena, GotaMala gotaMala, Music mm) {
         rainMusic = mm;
@@ -30,6 +31,7 @@ public class Lluvia {
         this.gotaMala = gotaMala;
         this.fondo = new Texture(Gdx.files.internal("Fondo.png"));
         this.gotafactory = new GotaFactoryGame();
+        this.parar = false;
     }
 
     public void crear() {
@@ -103,6 +105,12 @@ public class Lluvia {
         }
     }
 
+    public void pararLluvia() {
+        parar = true;
+        rainDropsPos.clear();
+        rainDropsType.clear();
+    }
+
     public Boolean actualizarMovimiento(Tarro tarro) {
         // generar gotas de lluvia
         if (TimeUtils.nanoTime() - lastDropTime > 100000000 && !tarro.congelado()) {
@@ -110,7 +118,7 @@ public class Lluvia {
             crearParaguas();
             crearBoosts();
         } cond = (fogueo != null && fogueo.estaActivoL());
-        if (!tarro.estaHerido() && !cond) {
+        if (!tarro.estaHerido() && !cond && !parar) {
             // revisar si las gotas cayeron al suelo o chocaron con el tarro
             for (int i = 0; i < rainDropsPos.size; ++i) {
                 Rectangle objetoLluvia = rainDropsPos.get(i);
