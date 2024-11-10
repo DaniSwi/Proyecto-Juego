@@ -70,4 +70,8 @@ public class PointsMultiplier implements Boost, ObjetoCaible {
         return (int)tiempoRestante;
     }
 
+    public String getTeclaActivacion() {
+        return "";
+    }
+
 }

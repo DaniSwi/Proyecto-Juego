@@ -13,13 +13,15 @@ public class Lluvia {
     private Array<Rectangle> rainDropsPos;
     private Array<ObjetoCaible> rainDropsType;
     private long lastDropTime;
-    private GotaNormal gotaNormal;
-    private GotaBuena gotaBuena;
-    private GotaMala gotaMala;
-    private Music rainMusic;
-    private Texture fondo;
-    private GotaFactory gotafactory;
+    private final GotaNormal gotaNormal;
+    private final GotaBuena gotaBuena;
+    private final GotaMala gotaMala;
+    private final Music rainMusic;
+    private final Texture fondo;
+    private final GotaFactory gotafactory;
     private Fogueo fogueo;
+    private float tEspera;
+    private boolean cond;
 
     public Lluvia(GotaNormal gotaNormal, GotaBuena gotaBuena, GotaMala gotaMala, Music mm) {
         rainMusic = mm;
@@ -32,11 +34,11 @@ public class Lluvia {
 
     public void crear() {
         rainDropsType = new Array<ObjetoCaible>();
-        //rainDropsType = new Array<Integer>();
         rainDropsPos = new Array<Rectangle>();
         crearGotasDeLluvia();
         crearParaguas();
         crearBoosts();
+        this.tEspera = 5f;
         // start the playback of the background music immediately
         rainMusic.setLooping(true);
         rainMusic.play();
@@ -94,7 +96,7 @@ public class Lluvia {
             Dash boost = new Dash(new Texture(Gdx.files.internal("dash.png")));
             rainDropsType.add(boost);
             rainDropsPos.add(boostCaer);
-        } else if(random > 30 && random <= 100) {
+        } else if(random > 30 && random <= 35) {
             Fogueo fogueo = new Fogueo(new Texture(Gdx.files.internal("fogueo.png")));
             rainDropsType.add(fogueo);
             rainDropsPos.add(boostCaer);
@@ -107,7 +109,7 @@ public class Lluvia {
             crearGotasDeLluvia();
             crearParaguas();
             crearBoosts();
-        } boolean cond = fogueo != null && fogueo.estaActivoL();
+        } cond = (fogueo != null && fogueo.estaActivoL());
         if (!tarro.estaHerido() && !cond) {
             // revisar si las gotas cayeron al suelo o chocaron con el tarro
             for (int i = 0; i < rainDropsPos.size; ++i) {
@@ -126,6 +128,14 @@ public class Lluvia {
                     rainDropsPos.removeIndex(i);
                 }
             }
+        } if(cond) {
+            tEspera -= Gdx.graphics.getDeltaTime();
+            tarro.getFogueo().setUso();
+        } if(cond && tarro.getFogueo().estaPorAcabarse()) {
+            tEspera = 5f;
+            rainDropsPos.clear();
+            rainDropsType.clear();
+            fogueo = null;
         }
         return true;
     }
@@ -149,6 +159,7 @@ public class Lluvia {
             pausar();
         }
         fogueo = tarro.getFogueo();
+        tEspera = 5f;
     }
 
     public Texture getFondo() {

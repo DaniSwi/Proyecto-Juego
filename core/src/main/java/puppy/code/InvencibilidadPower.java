@@ -62,5 +62,8 @@ public class InvencibilidadPower implements Boost, ObjetoCaible{
         sonido.play(0.5f);
     }
 
+    public String getTeclaActivacion() {
+        return "";
+    }
 
 }

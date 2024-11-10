@@ -52,7 +52,6 @@ public class Tarro {
         }
     }
 
-
     public void crear() {
         bucket = new Rectangle();
         bucket.x = 800 / 2 - 64 / 2;
@@ -121,7 +120,7 @@ public class Tarro {
                 dash = null;
         }
 
-        if(fogueo != null && fogueo.estaActivo() && Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+        if(fogueo != null && fogueo.estaActivo() && Gdx.input.isKeyJustPressed(Input.Keys.F) && !fogueo.estaActivoL()) {
             this.usoFogueo = true;
             fogueo.boost(this);
             fogueo.setUso();

@@ -6,13 +6,14 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Dash implements ObjetoCaible, Boost {
 
-    private Texture imagenDash;
+    private final Texture imagenDash;
     private boolean activo;
     private int usosRestantes;
     private final String nombre = "Dashes";
     private float duracionDash;
     private final int velocidadDash = 1600;
-    private Sound sonido;
+    private final Sound sonido;
+    private final String teclaActivacion = "Q|E";
 
     public Dash(Texture texture) {
         this.imagenDash = texture;
@@ -66,5 +67,9 @@ public class Dash implements ObjetoCaible, Boost {
 
     public float getVelocidadDash() {
         return velocidadDash;
+    }
+
+    public String getTeclaActivacion() {
+        return teclaActivacion;
     }
 }

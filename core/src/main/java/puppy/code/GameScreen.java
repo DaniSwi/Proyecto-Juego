@@ -113,7 +113,7 @@ public class GameScreen implements Screen {
             float y = 400f;
             for(Boost boost : boostActivos) {
                 if(boost instanceof Dash || boost instanceof Fogueo)
-                    font.draw(batchPr, boost.getNombreBoost() + ": " + boost.getTiempoRestante(), 600, y);
+                    font.draw(batchPr,   "("+boost.getTeclaActivacion()+")" + boost.getNombreBoost() + ": " + boost.getTiempoRestante(), 580, y);
                 else
                     font.draw(batchPr, boost.getNombreBoost() + ": " + boost.getTiempoRestante() + "s", 600, y);
                 y -= 20;

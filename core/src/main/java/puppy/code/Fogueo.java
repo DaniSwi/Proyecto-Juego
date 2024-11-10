@@ -13,12 +13,12 @@ public class Fogueo implements Boost, ObjetoCaible {
     private float tiempoRestante;
     private Sound hado;
     private boolean estaSiendoUsado;
+    private final String teclaActivacion = "F";
 
     public Fogueo(Texture imagenFogueo) {
         this.imagenFogueo = imagenFogueo;
         this.activo = false;
-        this.usosRestantes = 0;
-        this.tiempoRestante = 0;
+        this.usosRestantes = 1;
         this.hado = Gdx.audio.newSound(Gdx.files.internal("kurohitsugi.mp3"));
     }
 
@@ -51,7 +51,7 @@ public class Fogueo implements Boost, ObjetoCaible {
     }
 
     public void actualizar() {
-        if(activo) {
+        if(estaSiendoUsado) {
             tiempoRestante -= Gdx.graphics.getDeltaTime();
             if(tiempoRestante <= 0) {
                 --this.usosRestantes;
@@ -64,6 +64,7 @@ public class Fogueo implements Boost, ObjetoCaible {
 
     public void setUso() {
         this.estaSiendoUsado = true;
+        this.usosRestantes--;
     }
 
     public boolean estaActivo() {
@@ -81,6 +82,10 @@ public class Fogueo implements Boost, ObjetoCaible {
     public void caer() {}
 
     public boolean estaPorAcabarse() {
-        return tiempoRestante <= 0.25f;
+        return tiempoRestante <= 0.83f;
+    }
+
+    public String getTeclaActivacion() {
+        return teclaActivacion;
     }
 }
