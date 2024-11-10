@@ -18,8 +18,8 @@ public class Lluvia {
     private GotaMala gotaMala;
     private Music rainMusic;
     private Texture fondo;
-    private EstrategiaEfecto estrategia;
     private GotaFactory gotafactory;
+    private Fogueo fogueo;
 
     public Lluvia(GotaNormal gotaNormal, GotaBuena gotaBuena, GotaMala gotaMala, Music mm) {
         rainMusic = mm;
@@ -74,6 +74,11 @@ public class Lluvia {
         }
         lastDropTime = TimeUtils.nanoTime();
     }
+
+    public void activarFogueo(Fogueo fogueo) {
+        this.fogueo = fogueo;
+    }
+
 
     private void crearBoosts() {
         Rectangle boostCaer = new Rectangle();

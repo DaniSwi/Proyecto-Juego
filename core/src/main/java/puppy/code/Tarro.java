@@ -162,9 +162,14 @@ public class Tarro {
     }
 
     public void activarInvencibilidad(InvencibilidadPower invencibilidad) {
-        this.invencibilidadPower = invencibilidad;
-        invencibilidad.boost(this);
-        invencibilidad.activarSonido();
+        if(invencibilidadPower != null && invencibilidadPower.estaActivo()) {
+            this.invencibilidadPower = invencibilidad;
+            invencibilidad.boost(this);
+        } else {
+            this.invencibilidadPower = invencibilidad;
+            invencibilidad.boost(this);
+            invencibilidad.activarSonido();
+        }
     }
 
     public Array getBoostsActivos() {

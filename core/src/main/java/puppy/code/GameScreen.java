@@ -86,6 +86,7 @@ public class GameScreen implements Screen {
             tarro.dibujarParaguas(batch);
 
         if (!lluvia.actualizarMovimiento(tarro)) {
+            PlayerStats.getInstance().setScoreActual(tarro.getPuntos());
             //Actualizar intentos
             PlayerStats.getInstance().updateIntentos();
             //actualizar HigherScore
