@@ -8,7 +8,6 @@ public class GameLluviaMenu extends Game {
 
     private SpriteBatch batch;
     private BitmapFont font;
-    private int higherScore;
 
     public void create() {
         batch = new SpriteBatch();
@@ -33,9 +32,6 @@ public class GameLluviaMenu extends Game {
         return font;
     }
 
-    public int getHigherScore() {
-        return higherScore;
-    }
 
 
 }

@@ -15,15 +15,14 @@ public class GameScreen implements Screen {
 
     final GameLluviaMenu game;
     private OrthographicCamera camera;
-    private SpriteBatch batch;
+    private SpriteBatch batchPr;
     private BitmapFont font;
     private Tarro tarro;
     private Lluvia lluvia;
 
-
     public GameScreen(final GameLluviaMenu game) {
         this.game = game;
-        this.batch = game.getBatch();
+        this.batchPr = game.getBatch();
         this.font = game.getFont();
         // load the images for the droplet and the bucket, 64x64 pixels each
         Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
@@ -52,7 +51,7 @@ public class GameScreen implements Screen {
         // camera
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-        batch = new SpriteBatch();
+        batchPr = new SpriteBatch();
         // creacion del tarro
         tarro.crear();
 
@@ -67,14 +66,14 @@ public class GameScreen implements Screen {
         //actualizar matrices de la cámara
         camera.update();
         //actualizar
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        batch.draw(lluvia.getFondo(), 0, 0, camera.viewportWidth, camera.viewportHeight);
+        batchPr.setProjectionMatrix(camera.combined);
+        batchPr.begin();
+        batchPr.draw(lluvia.getFondo(), 0, 0, camera.viewportWidth, camera.viewportHeight);
         //dibujar textos
         int highScore = PlayerStats.getInstance().getHighScore();
-        font.draw(batch, "Gotas totales: " + tarro.getPuntos(), 5, 475);
-        font.draw(batch, "Vidas : " + tarro.getVidas(), 670, 475);
-        font.draw(batch, "HighScore : " + highScore, camera.viewportWidth/2-50, 475);
+        font.draw(batchPr, "Gotas totales: " + tarro.getPuntos(), 5, 475);
+        font.draw(batchPr, "Vidas : " + tarro.getVidas(), 670, 475);
+        font.draw(batchPr, "HighScore : " + highScore, camera.viewportWidth/2-50, 475);
 
         if (!tarro.estaHerido()) {
             // movimiento del tarro desde teclado
@@ -83,7 +82,7 @@ public class GameScreen implements Screen {
 
         // caida de la lluvia
         if (tarro.getParaguas() != null && tarro.getParaguas().estaCapturado())
-            tarro.dibujarParaguas(batch);
+            tarro.dibujarParaguas(batchPr);
 
         if (!lluvia.actualizarMovimiento(tarro)) {
             PlayerStats.getInstance().setScoreActual(tarro.getPuntos());
@@ -98,7 +97,15 @@ public class GameScreen implements Screen {
             dispose();
         }
 
-        tarro.dibujar(batch);
+        tarro.dibujar(batchPr);
+
+        if(tarro.getFogueo() != null && tarro.tieneFogueoActivo()){
+            tarro.activarFogueoL(lluvia);
+            if(tarro.getFogueo().estaPorAcabarse()) {
+                tarro.setUsoFogueo(false);
+                lluvia.continuar();
+            }
+        }
 
         // aca implementar boost activo lololol
         if(tarro.tieneBoostActivo()) {
@@ -106,17 +113,17 @@ public class GameScreen implements Screen {
             float y = 400f;
             for(Boost boost : boostActivos) {
                 if(boost instanceof Dash || boost instanceof Fogueo)
-                    font.draw(batch, boost.getNombreBoost() + ": " + boost.getTiempoRestante(), 600, y);
+                    font.draw(batchPr, boost.getNombreBoost() + ": " + boost.getTiempoRestante(), 600, y);
                 else
-                    font.draw(batch, boost.getNombreBoost() + ": " + boost.getTiempoRestante() + "s", 600, y);
+                    font.draw(batchPr, boost.getNombreBoost() + ": " + boost.getTiempoRestante() + "s", 600, y);
                 y -= 20;
             }
         }
 
 
-        lluvia.actualizarDibujoLluvia(batch);
+        lluvia.actualizarDibujoLluvia(batchPr);
 
-        batch.end();
+        batchPr.end();
     }
 
     @Override

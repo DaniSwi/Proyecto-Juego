@@ -55,14 +55,6 @@ public class Dash implements ObjetoCaible, Boost {
         aplicarEfecto(tarro);
     }
 
-    public void actualizar() {
-        duracionDash -= Gdx.graphics.getDeltaTime();
-        if(duracionDash <= 0) {
-            duracionDash = 0.2f;
-            --usosRestantes;
-        }
-    }
-
     public boolean estaActivo() {
         if(duracionDash > 0) {
             return true;

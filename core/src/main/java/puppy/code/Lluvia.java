@@ -75,11 +75,6 @@ public class Lluvia {
         lastDropTime = TimeUtils.nanoTime();
     }
 
-    public void activarFogueo(Fogueo fogueo) {
-        this.fogueo = fogueo;
-    }
-
-
     private void crearBoosts() {
         Rectangle boostCaer = new Rectangle();
         boostCaer.x = MathUtils.random(0, 800 - 64);
@@ -99,17 +94,21 @@ public class Lluvia {
             Dash boost = new Dash(new Texture(Gdx.files.internal("dash.png")));
             rainDropsType.add(boost);
             rainDropsPos.add(boostCaer);
+        } else if(random > 30 && random <= 100) {
+            Fogueo fogueo = new Fogueo(new Texture(Gdx.files.internal("fogueo.png")));
+            rainDropsType.add(fogueo);
+            rainDropsPos.add(boostCaer);
         }
     }
 
     public Boolean actualizarMovimiento(Tarro tarro) {
         // generar gotas de lluvia
-        if (TimeUtils.nanoTime() - lastDropTime > 100000000) {
+        if (TimeUtils.nanoTime() - lastDropTime > 100000000 && !tarro.congelado()) {
             crearGotasDeLluvia();
             crearParaguas();
             crearBoosts();
-        }
-        if (!tarro.estaHerido()) {
+        } boolean cond = fogueo != null && fogueo.estaActivoL();
+        if (!tarro.estaHerido() && !cond) {
             // revisar si las gotas cayeron al suelo o chocaron con el tarro
             for (int i = 0; i < rainDropsPos.size; ++i) {
                 Rectangle objetoLluvia = rainDropsPos.get(i);
@@ -145,7 +144,16 @@ public class Lluvia {
         gotaBuena.getImagenGota().dispose();
     }
 
+    public void setFogueo(Tarro tarro) {
+        if(tarro.usoFogueo()) {
+            pausar();
+        }
+        fogueo = tarro.getFogueo();
+    }
+
     public Texture getFondo() {
+        if(fogueo != null && fogueo.estaActivoL())
+            return new Texture(Gdx.files.internal("hadoNo.png"));
         return fondo;
     }
 

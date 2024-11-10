@@ -24,10 +24,12 @@ public class Tarro {
     private InvencibilidadPower invencibilidadPower;
     private Dash dash;
     private Fogueo fogueo;
+    private boolean usoFogueo;
 
     public Tarro(Texture tex, Sound ss) {
         bucketImage = tex;
         sonidoHerido = ss;
+        this.usoFogueo = false;
     }
 
     public int getVidas() {
@@ -88,6 +90,8 @@ public class Tarro {
             pointsMultiplier.actualizar();
         if(invencibilidadPower != null && invencibilidadPower.estaActivo())
             invencibilidadPower.actualizar();
+        if(fogueo != null && fogueo.estaActivo())
+            fogueo.actualizar();
     }
 
     public void actualizarMovimiento() {
@@ -116,11 +120,21 @@ public class Tarro {
             if(dash.getTiempoRestante() <= 0)
                 dash = null;
         }
+
+        if(fogueo != null && fogueo.estaActivo() && Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+            this.usoFogueo = true;
+            fogueo.boost(this);
+            fogueo.setUso();
+            fogueo.reproducirSonido();
+        }
         // que no se salga de los bordes izq y der
         if (bucket.x < 0) bucket.x = 0;
         if (bucket.x > 800 - 64) bucket.x = 800 - 64;
     }
 
+    public boolean usoFogueo() {
+        return usoFogueo;
+    }
 
     public void destruir() {
         bucketImage.dispose();
@@ -156,7 +170,7 @@ public class Tarro {
     }
 
     public Boolean tieneBoostActivo() {
-        if((pointsMultiplier != null && pointsMultiplier.estaActivo()) || (invencibilidadPower != null && invencibilidadPower.estaActivo()) || (dash != null && dash.estaActivo()))
+        if((pointsMultiplier != null && pointsMultiplier.estaActivo()) || (invencibilidadPower != null && invencibilidadPower.estaActivo()) || (dash != null && dash.estaActivo()) || (fogueo != null && fogueo.estaActivo()))
             return true;
         return false;
     }
@@ -170,6 +184,14 @@ public class Tarro {
             invencibilidad.boost(this);
             invencibilidad.activarSonido();
         }
+    }
+
+    public void activarFogueo(Fogueo fogueo) {
+        this.fogueo = fogueo;
+    }
+
+    public void activarFogueoL(Lluvia lluvia) {
+        lluvia.setFogueo(this);
     }
 
     public Array getBoostsActivos() {
@@ -188,6 +210,22 @@ public class Tarro {
 
     public void activarDash(Dash dash) {
         this.dash = dash;
+    }
+
+    public boolean tieneFogueoActivo() {
+        return fogueo != null && fogueo.estaActivo();
+    }
+
+    public Fogueo getFogueo() {
+        return fogueo;
+    }
+
+    public void setUsoFogueo(boolean b) {
+        this.usoFogueo = b;
+    }
+
+    public boolean congelado() {
+        return herido || usoFogueo;
     }
 
 }
