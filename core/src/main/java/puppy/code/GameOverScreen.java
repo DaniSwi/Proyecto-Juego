@@ -46,7 +46,7 @@ public class GameOverScreen implements Screen {
         font.draw(batch, "Intentos: " + intentos + "                            Puntuación:" + score , 100, 50 );
         batch.end();
 
-        if (Gdx.input.isTouched() || Gdx.input.isButtonJustPressed(Input.Keys.ANY_KEY)) {
+        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
             game.setScreen(new GameScreen(game));
             dispose();
         }

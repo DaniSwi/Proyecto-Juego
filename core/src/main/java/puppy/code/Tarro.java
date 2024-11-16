@@ -124,13 +124,17 @@ public class Tarro {
                 dash = null;
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-            input += "D";
+            if(input.isEmpty())
+                input += "D";
         } else if(Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            input += "A";
+            if(input.equals("D"))
+                input += "A";
         } else if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-            input += "N";
+            if(input.equals("DA"))
+                input += "N";
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-            input += "I";
+            if(input.equals("DAN"))
+                input += "I";
         }
 
         if(input.equals("DANI")){
