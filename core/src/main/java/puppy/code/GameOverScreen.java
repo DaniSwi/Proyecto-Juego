@@ -1,6 +1,7 @@
 package puppy.code;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -41,11 +42,11 @@ public class GameOverScreen implements Screen {
         int intentos = PlayerStats.getInstance().getIntentos();
         int score = PlayerStats.getInstance().getScoreActual();
         font.draw(batch, "GAME                                           OVER ", 100, 200);
-        font.draw(batch, "Toca en cualquier lado para reiniciar.", 100, 100);
+        font.draw(batch, "Toca cualquier cosa para reiniciar.", 100, 100);
         font.draw(batch, "Intentos: " + intentos + "                            Puntuación:" + score , 100, 50 );
         batch.end();
 
-        if (Gdx.input.isTouched()) {
+        if (Gdx.input.isTouched() || Gdx.input.isButtonJustPressed(Input.Keys.ANY_KEY)) {
             game.setScreen(new GameScreen(game));
             dispose();
         }

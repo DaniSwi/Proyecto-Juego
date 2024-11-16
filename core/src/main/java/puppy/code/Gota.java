@@ -20,8 +20,8 @@ public abstract class Gota implements ObjetoCaible {
         this.area = new Rectangle();
         this.area.x = MathUtils.random(0, 800-64);
         this.area.y = 480;
-        this.area.width = 64;
-        this.area.height = 64;
+        this.area.width = 58;
+        this.area.height = 58;
         this.sonidoEfecto = sonidoEfecto;
     }
 
@@ -31,8 +31,8 @@ public abstract class Gota implements ObjetoCaible {
         this.area = new Rectangle();
         this.area.x = MathUtils.random(0, 800-64);
         this.area.y = 480;
-        this.area.width = 64;
-        this.area.height = 64;
+        this.area.width = 58;
+        this.area.height = 58;
     }
 
     public void caer() {

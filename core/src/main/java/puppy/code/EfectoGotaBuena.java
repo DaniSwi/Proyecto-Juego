@@ -2,7 +2,7 @@ package puppy.code;
 
 public class EfectoGotaBuena implements EstrategiaEfecto {
 
-    public GotaBuena gotaBuena;
+    private GotaBuena gotaBuena;
 
     public EfectoGotaBuena(GotaBuena gotaBuena) {
         this.gotaBuena = gotaBuena;

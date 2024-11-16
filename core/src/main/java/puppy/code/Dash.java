@@ -42,16 +42,16 @@ public class Dash implements ObjetoCaible, Boost {
     public String getNombreBoost() {
         return nombre;
     }
-
+    @Override
     public void aplicarEfecto(Tarro tarro) {
         this.activo = true;
         this.usosRestantes = 3;
         this.duracionDash = 0.2f;
         tarro.activarDash(this);
     }
-
+    @Override
     public void caer() {}
-
+    @Override
     public void boost(Tarro tarro) {
         aplicarEfecto(tarro);
     }

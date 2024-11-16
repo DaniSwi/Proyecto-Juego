@@ -21,11 +21,13 @@ public class GameScreen implements Screen {
     private Lluvia lluvia;
     private boolean easterEggFound = false;
     private final Texture f = new Texture(Gdx.files.internal("lol.png"));
+    private final Music lol;
 
     public GameScreen(final GameLluviaMenu game) {
         this.game = game;
         this.batchPr = game.getBatch();
         this.font = game.getFont();
+        this.lol = Gdx.audio.newMusic(Gdx.files.internal("treachery.mp3"));
         // load the images for the droplet and the bucket, 64x64 pixels each
         Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
         tarro = new Tarro(new Texture(Gdx.files.internal("bucket.png")),hurtSound);
@@ -102,12 +104,11 @@ public class GameScreen implements Screen {
         if(tarro.getPuntos() >= 10000) {
             if(!easterEggFound) {
                 easterEggFound = true;
-                Music s = Gdx.audio.newMusic(Gdx.files.internal("treachery.mp3"));
                 lluvia.pausar();
                 lluvia.pararLluvia();
-                s.setLooping(true);
-                s.setVolume(0.5f);
-                s.play();
+                lol.setLooping(true);
+                lol.setVolume(0.5f);
+                lol.play();
             }
             batchPr.draw(f, 0, 0, camera.viewportWidth, camera.viewportHeight);
             font.setColor(1, 1, 1,1);
@@ -131,7 +132,7 @@ public class GameScreen implements Screen {
             Array<Boost> boostActivos = tarro.getBoostsActivos();
             float y = 400f;
             for(Boost boost : boostActivos) {
-                if(boost instanceof Dash || boost instanceof Fogueo)
+                if(boost instanceof Dash || boost instanceof Fogueo) //El unico instanceof del código es para no printear la "s" de segundos
                     font.draw(batchPr,   "("+boost.getTeclaActivacion()+")" + boost.getNombreBoost() + ": " + boost.getTiempoRestante(), 580, y);
                 else
                     font.draw(batchPr, boost.getNombreBoost() + ": " + boost.getTiempoRestante() + "s", 600, y);

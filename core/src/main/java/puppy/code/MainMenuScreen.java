@@ -1,6 +1,7 @@
 package puppy.code;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,12 +35,12 @@ public class MainMenuScreen implements Screen {
         batch.begin();
         batch.draw(new Texture(Gdx.files.internal("yokoso.png")), 0, 0, 800, 480);
         font.getData().setScale(2, 2);
-        font.draw(batch, "Bienvenido a Gotas Locas ", 100, camera.viewportHeight/2+50);
-        font.draw(batch, "Toca en cualquier lugar para comenzar!", 100, camera.viewportHeight/2-50);
+        font.draw(batch, "Bienvenido a recolecta gotas versión 11 (jaja)", 100, camera.viewportHeight/2+50);
+        font.draw(batch, "Toca cualquier cosa para comenzar!", 100, camera.viewportHeight/2-50);
 
         batch.end();
 
-        if (Gdx.input.isTouched()) {
+        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
             game.setScreen(new GameScreen(game));
             dispose();
         }

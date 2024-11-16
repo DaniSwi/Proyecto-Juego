@@ -19,10 +19,20 @@ public class Lluvia {
     private final Music rainMusic;
     private final Texture fondo;
     private final GotaFactory gotafactory;
+    private final EfectoGotaNormal efectoNormal;
+    private final EfectoGotaBuena efectoBuena;
+    private final EfectoGotaMala efectoMala;
     private Fogueo fogueo;
     private float tEspera;
     private boolean cond;
     private boolean parar;
+    private final Paraguas p;
+    private final PointsMultiplier pMult;
+    private final InvencibilidadPower inv;
+    private final Dash d;
+    private final Fogueo f;
+    private final Texture texSecundaria;
+    private boolean easterEgg;
 
     public Lluvia(GotaNormal gotaNormal, GotaBuena gotaBuena, GotaMala gotaMala, Music mm) {
         rainMusic = mm;
@@ -32,6 +42,16 @@ public class Lluvia {
         this.fondo = new Texture(Gdx.files.internal("Fondo.png"));
         this.gotafactory = new GotaFactoryGame();
         this.parar = false;
+        this.p = new Paraguas(new Texture(Gdx.files.internal("ParaguasSprite.png")), 20);
+        this.pMult = new PointsMultiplier(new Texture(Gdx.files.internal("spriteBoostMultiplicador.png")));
+        this.inv = new InvencibilidadPower(new Texture(Gdx.files.internal("invencibilidad.png")));
+        this.d = new Dash(new Texture(Gdx.files.internal("dash.png")));
+        this.f = new Fogueo(new Texture(Gdx.files.internal("fogueo.png")));
+        this.texSecundaria = new Texture(Gdx.files.internal("hadoNo.png"));
+        this.efectoNormal = new EfectoGotaNormal(gotaNormal);
+        this.efectoBuena = new EfectoGotaBuena(gotaBuena);
+        this.efectoMala = new EfectoGotaMala(gotaMala);
+        this.easterEgg = false;
     }
 
     public void crear() {
@@ -48,8 +68,7 @@ public class Lluvia {
 
     private void crearParaguas() {
         if (MathUtils.random(0, 200) < 1) {
-            Texture paraguasT = new Texture(Gdx.files.internal("paraguasSprite.png"));
-            Paraguas paraguas = new Paraguas(paraguasT, 20);
+            Paraguas paraguas = p;
             rainDropsPos.add(paraguas.getArea());
             rainDropsType.add(paraguas);
         }
@@ -64,16 +83,16 @@ public class Lluvia {
         rainDropsPos.add(objetoLLuvia);
         int random = MathUtils.random(0, 100);
         if (random >= 0 && random <= 30) {
-            Gota gota = gotafactory.crearGotaMala();
-            gota.setEstrategiaEfecto(new EfectoGotaMala((GotaMala) gota));
+            Gota gota = gotafactory.crearGotaMala(easterEgg);
+            gota.setEstrategiaEfecto(efectoMala);
             rainDropsType.add(gota);
         } else if (random >= 31 && random <= 99) {
             Gota gota = gotafactory.crearGotaNormal();
-            gota.setEstrategiaEfecto(new EfectoGotaNormal((GotaNormal) gota));
+            gota.setEstrategiaEfecto(efectoNormal);
             rainDropsType.add(gota);
         } else {
             Gota gota = gotafactory.crearGotaBuena();
-            gota.setEstrategiaEfecto(new EfectoGotaBuena((GotaBuena) gota));
+            gota.setEstrategiaEfecto(efectoBuena);
             rainDropsType.add(gota);
         }
         lastDropTime = TimeUtils.nanoTime();
@@ -87,20 +106,16 @@ public class Lluvia {
         boostCaer.height = 64;
         int random = MathUtils.random(0, 1000);
         if (random >= 0 && random <= 20) {
-            PointsMultiplier boost = new PointsMultiplier(new Texture(Gdx.files.internal("spriteBoostMultiplicador.png")));
-            rainDropsType.add(boost);
+            rainDropsType.add(pMult);
             rainDropsPos.add(boostCaer);
         } else if(random > 20 && random <= 25) {
-            InvencibilidadPower boost = new InvencibilidadPower(new Texture(Gdx.files.internal("invencibilidad.png")));
-            rainDropsType.add(boost);
+            rainDropsType.add(inv);
             rainDropsPos.add(boostCaer);
         } else if(random > 25 && random <= 30) {
-            Dash boost = new Dash(new Texture(Gdx.files.internal("dash.png")));
-            rainDropsType.add(boost);
+            rainDropsType.add(d);
             rainDropsPos.add(boostCaer);
         } else if(random > 30 && random <= 35) {
-            Fogueo fogueo = new Fogueo(new Texture(Gdx.files.internal("fogueo.png")));
-            rainDropsType.add(fogueo);
+            rainDropsType.add(f);
             rainDropsPos.add(boostCaer);
         }
     }
@@ -118,6 +133,7 @@ public class Lluvia {
             crearParaguas();
             crearBoosts();
         } cond = (fogueo != null && fogueo.estaActivoL());
+        easterEgg = tarro.getAux();
         if (!tarro.estaHerido() && !cond && !parar) {
             // revisar si las gotas cayeron al suelo o chocaron con el tarro
             for (int i = 0; i < rainDropsPos.size; ++i) {
@@ -172,7 +188,7 @@ public class Lluvia {
 
     public Texture getFondo() {
         if(fogueo != null && fogueo.estaActivoL())
-            return new Texture(Gdx.files.internal("hadoNo.png"));
+            return texSecundaria;
         return fondo;
     }
 

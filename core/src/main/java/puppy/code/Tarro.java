@@ -25,11 +25,15 @@ public class Tarro {
     private Dash dash;
     private Fogueo fogueo;
     private boolean usoFogueo;
+    private boolean aux;
+    private String input = "";
+    private boolean lol = false;
 
     public Tarro(Texture tex, Sound ss) {
         bucketImage = tex;
         sonidoHerido = ss;
         this.usoFogueo = false;
+        this.aux = false;
     }
 
     public int getVidas() {
@@ -118,6 +122,24 @@ public class Tarro {
             dash.quitarUso();
             if(dash.getTiempoRestante() <= 0)
                 dash = null;
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+            input += "D";
+        } else if(Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+            input += "A";
+        } else if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+            input += "N";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+            input += "I";
+        }
+
+        if(input.equals("DANI")){
+            aux = true;
+            if(!lol) {
+                Sound s = Gdx.audio.newSound(Gdx.files.internal("kyokaSuigetsu.mp3"));
+                s.play();
+                lol = true;
+            }
         }
 
         if(fogueo != null && fogueo.estaActivo() && Gdx.input.isKeyJustPressed(Input.Keys.F) && !fogueo.estaActivoL()) {
@@ -225,6 +247,10 @@ public class Tarro {
 
     public boolean congelado() {
         return herido || usoFogueo;
+    }
+
+    public boolean getAux() {
+        return aux;
     }
 
 }
