@@ -9,10 +9,6 @@ public class GotaBuena extends Gota {
         super(imagenGota, velocidadCaida, sonidoEfecto);
     }
 
-    public GotaBuena(Texture imagenGota, float velocidadCaida) {
-        super(imagenGota, velocidadCaida);
-    }
-
     @Override
     public void aplicarEfecto(Tarro tarro) {
         EstrategiaEfecto estrategiaEfecto = this.getEstrategiaEfecto();

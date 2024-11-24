@@ -5,16 +5,28 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class GotaFactoryGame implements GotaFactory {
 
-    public Gota crearGotaBuena() {
-        return new GotaBuena(new Texture(Gdx.files.internal("tapsin.png")), 30, Gdx.audio.newSound(Gdx.files.internal("sonidoVidaAumentada.mp3")));
+    private final GotaNormal gotaNormal;
+    private final GotaBuena gotaBuena;
+    private final GotaMala gotaMala;
+
+    public GotaFactoryGame(GotaNormal gotaNormal, GotaBuena gotaBuena, GotaMala gotaMala) {
+        this.gotaNormal = gotaNormal;
+        this.gotaBuena = gotaBuena;
+        this.gotaMala = gotaMala;
     }
+
+    public Gota crearGotaBuena() {
+        return gotaBuena;
+    }
+
     public Gota crearGotaMala(boolean b) {
         if(b)
-            return new GotaMala(new Texture(Gdx.files.internal("dosecat.png")), 30, Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")));
-        return new GotaMala(new Texture(Gdx.files.internal("dropBad.png")), 30, Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")));
+            gotaMala.activarEG();
+        return gotaMala;
     }
+
     public Gota crearGotaNormal() {
-        return new GotaNormal(new Texture(Gdx.files.internal("drop.png")), 30, Gdx.audio.newSound(Gdx.files.internal("drop.wav")));
+        return gotaNormal;
     }
 
 }

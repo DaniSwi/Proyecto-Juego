@@ -47,10 +47,6 @@ public abstract class Gota implements ObjetoCaible {
         sonidoEfecto.play();
     }
 
-    public Sound getSonidoEfecto(){
-        return sonidoEfecto;
-    }
-
     public Texture getTexture() {
         return imagenGota;
     }
@@ -61,5 +57,9 @@ public abstract class Gota implements ObjetoCaible {
 
     public EstrategiaEfecto getEstrategiaEfecto() {
         return estrategiaEfecto;
+    }
+
+    public void setImagenGota(Texture imagenGota) {
+        this.imagenGota = imagenGota;
     }
 }

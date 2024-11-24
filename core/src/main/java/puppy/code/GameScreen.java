@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
         // load the drop sound effect and the rain background "music"
         Texture gota = new Texture(Gdx.files.internal("drop.png"));
         Texture gotaMalaT = new Texture(Gdx.files.internal("dropBad.png"));
-        Texture gotaB = new Texture(Gdx.files.internal("gotaVerde.png"));
+        Texture gotaB = new Texture(Gdx.files.internal("tapsin.png"));
 
         //Cargar los sonidos
         Sound s1 = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));

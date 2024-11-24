@@ -40,7 +40,7 @@ public class Lluvia {
         this.gotaBuena = gotaBuena;
         this.gotaMala = gotaMala;
         this.fondo = new Texture(Gdx.files.internal("Fondo.png"));
-        this.gotafactory = new GotaFactoryGame();
+        this.gotafactory = new GotaFactoryGame(gotaNormal, gotaBuena, gotaMala);
         this.parar = false;
         this.p = new Paraguas(new Texture(Gdx.files.internal("ParaguasSprite.png")), 20);
         this.pMult = new PointsMultiplier(new Texture(Gdx.files.internal("spriteBoostMultiplicador.png")));
